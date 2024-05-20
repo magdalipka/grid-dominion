@@ -1,7 +1,5 @@
 package com.example.griddominion.controllers;
 
-
-
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.griddominion.models.api.input.UserCreationInput;
@@ -32,10 +30,12 @@ public class UserController {
   private UserService userService;
 
   @PostMapping()
-  public ResponseEntity<UserOutput> registerUser(@RequestBody UserCreationInput userInput) {
+  public ResponseEntity<SessionOutput> registerUser(@RequestBody UserCreationInput userInput) {
     var user = userService.createUser(userInput);
-    var userResponse = new UserOutput(user);
-    return ResponseEntity.ok(userResponse);
+    var session = userService.login(user.getNick(), userInput.password);
+    var SessionOutput = new SessionOutput(session);
+    return ResponseEntity.ok().headers(
+        new Headers().addSid(session.getId())).body(SessionOutput);
   }
 
   @PostMapping("/login")

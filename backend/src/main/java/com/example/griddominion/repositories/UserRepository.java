@@ -19,8 +19,8 @@ public interface UserRepository extends JpaRepository<UserModel, String> {
 
   @Modifying
   @Transactional
-  @Query(value = "INSERT INTO users (id, nick, hashed_password, created_at) VALUES (?1, ?2, ?3, ?4)", nativeQuery = true)
-  void insert(String id, String nick, String hashedPassword, LocalDateTime createdAt)
+  @Query(value = "INSERT INTO users (id, hashed_password, created_at, nick, level, experience, experienceToLevelUp) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", nativeQuery = true)
+  void insert(String id, String hashedPassword, LocalDateTime createdAt, String nick, int level, int experience, int experienceToLevelUp)
       throws DataIntegrityViolationException;
 
 }

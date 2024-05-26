@@ -3,6 +3,7 @@ package com.example.griddominion.services;
 
 import java.util.UUID;
 
+import com.example.griddominion.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +49,14 @@ public class UserService {
     UserModel user = new UserModel();
     user.setId(id);
     user.setNick(input.nick);
+    user.setLevel(1);
+    user.setExperience(0);
+    user.setExperienceToLevelUp(Constants.BASE_EXPERIENCE);
     user.setHashedPassword(hashedPassword);
     user.setCreatedAt();
 
     try {
-      userRepository.insert(user.getId(), user.getNick(), user.getHashedPassword(), user.getCreatedAt());
+      userRepository.insert(user.getId(), user.getHashedPassword(), user.getCreatedAt(), user.getNick(), user.getLevel(), user.getExperience(), user.getExperienceToLevelUp());
     } catch (DataIntegrityViolationException e) {
       throw new ResourceConflict("User with nick " + input.nick + " already exists");
     }

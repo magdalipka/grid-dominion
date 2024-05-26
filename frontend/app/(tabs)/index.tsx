@@ -1,36 +1,66 @@
 import { Image, StyleSheet, View, Text } from "react-native";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import { useAuth } from "@/contexts/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MapView from "react-native-maps";
+import React from "react";
+
+import * as Location from "expo-location";
 
 export default function HomeScreen() {
   const { user } = useAuth();
+
+  const [location, setLocation] = React.useState<{
+    longitude: number;
+    latitude: number;
+  } | null>(null);
+
+  React.useEffect(() => {
+    (async () => {
+      const { status: foregroundPermissionStatus } =
+        await Location.requestForegroundPermissionsAsync();
+      const { status: backgroundPermissionStatus } =
+        await Location.requestForegroundPermissionsAsync();
+      await Location.enableNetworkProviderAsync();
+      if (
+        foregroundPermissionStatus === "granted" ||
+        backgroundPermissionStatus === "granted"
+      ) {
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location.coords);
+      }
+    })();
+  }, []);
+
+  if (!location) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <Text>{JSON.stringify({ user })}</Text>
+      <MapView
+        style={styles.map}
+        initialRegion={{
+          ...location,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.05,
+        }}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
+  container: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
+  map: {
+    width: "100%",
+    height: "100%",
   },
 });

@@ -5,7 +5,17 @@ import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useAuth } from "@/contexts/auth";
-import { TextInput, View, Text, Button, Pressable } from "react-native";
+import {
+  TextInput,
+  Button,
+  Pressable,
+  Image,
+  StyleSheet,
+  View,
+  Text,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { COLORS } from "@/lib/colors";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -26,40 +36,46 @@ export default function TabLayout() {
 
   if (!user) {
     return (
-      <View>
-        <View>
-          <Text>Nick</Text>
-          <TextInput onChangeText={onNickInput} value={nick} />
-        </View>
-        <View>
-          <Text>Password</Text>
-          <TextInput onChangeText={onPasswordInput} value={password} />
-        </View>
-        {hasAccount ? (
-          <Button
-            title="login"
-            onPress={() => {
-              console.log({ nick, password });
-              login({ nick, password });
-            }}
-          />
-        ) : (
-          <Button
-            title="register"
-            onPress={() => {
-              console.log({ nick, password });
-              register({ nick, password });
-            }}
-          />
-        )}
-        <Pressable onPress={() => setHasAccount(!hasAccount)}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.auth}>
+          <View>
+            <Text>Nick</Text>
+            <TextInput onChangeText={onNickInput} value={nick} style={styles.input} />
+          </View>
+          <View>
+            <Text>Password</Text>
+            <TextInput
+              onChangeText={onPasswordInput}
+              value={password}
+              style={styles.input}
+            />
+          </View>
           {hasAccount ? (
-            <Text>Don't have an account? Click here to register</Text>
+            <Button
+              title="login"
+              onPress={() => {
+                console.log({ nick, password });
+                login({ nick, password });
+              }}
+            />
           ) : (
-            <Text>Already have an account? Click here to login</Text>
+            <Button
+              title="register"
+              onPress={() => {
+                console.log({ nick, password });
+                register({ nick, password });
+              }}
+            />
           )}
-        </Pressable>
-      </View>
+          <Pressable onPress={() => setHasAccount(!hasAccount)}>
+            {hasAccount ? (
+              <Text>Don't have an account? Click here to register</Text>
+            ) : (
+              <Text>Already have an account? Click here to login</Text>
+            )}
+          </Pressable>
+        </View>
+      </SafeAreaView>
     );
   }
 
@@ -82,3 +98,23 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "space-around",
+    height: "100%",
+    width: "100%",
+  },
+  auth: {
+    flex: 1,
+    gap: 4,
+    display: "flex",
+    justifyContent: "center",
+  },
+  input: {
+    backgroundColor: COLORS.backgroundDark,
+  },
+});

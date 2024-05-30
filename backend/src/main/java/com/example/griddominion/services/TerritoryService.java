@@ -1,10 +1,12 @@
 package com.example.griddominion.services;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.example.griddominion.models.api.input.TerritoryOwnerInput;
@@ -12,10 +14,15 @@ import com.example.griddominion.models.api.output.TerritoryOutput;
 import com.example.griddominion.models.api.output.TerritoryOwnerOutput;
 import com.example.griddominion.models.db.TerritoryModel;
 import com.example.griddominion.models.db.UserModel;
+import com.example.griddominion.models.db.InventoryModel;
+import com.example.griddominion.repositories.InventoryRepository;
 import com.example.griddominion.repositories.TerritoryRepository;
 import com.example.griddominion.repositories.UserRepository;
+import com.example.griddominion.utils.Constants;
+import com.example.griddominion.utils.Item;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 
 @Service
 public class TerritoryService {
@@ -23,28 +30,48 @@ public class TerritoryService {
     TerritoryRepository territoryRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    InventoryRepository inventoryRepository;
 
     @PostConstruct
     public void initTerritories(){
         if(territoryRepository.findAll().isEmpty()){
-            double start_latitude = 50.12489;
-            double start_longitude = 19.75846;
-            double diff_latitude = 0.001214;
-            double diff_longitude = 0.001894;
+        
             Random random = new Random();
 
             for(int i = 0; i <200;i++){
                 for(int j = 0; j<150; j++){
                     TerritoryModel territoryModel = new TerritoryModel();
-                    territoryModel.setMaxLatitude(start_latitude - i*diff_latitude);
-                    territoryModel.setMinLatitude(start_latitude - (i+1)*diff_latitude);
-                    territoryModel.setMinLongitude(start_longitude + i*diff_longitude);
-                    territoryModel.setMaxLongitude(start_longitude + (i+1)*diff_longitude);
+                    territoryModel.setMaxLatitude(Constants.START_LATITUDE - i*Constants.DIFF_LATITUDE);
+                    territoryModel.setMinLatitude(Constants.START_LATITUDE - (i+1)*Constants.DIFF_LATITUDE);
+                    territoryModel.setMinLongitude(Constants.START_LONGITUDE + i*Constants.DIFF_LONGITUDE);
+                    territoryModel.setMaxLongitude(Constants.START_LONGITUDE+ (i+1)*Constants.DIFF_LONGITUDE);
                     territoryModel.setGold(100 + random.nextInt(901));
                     territoryModel.setWood(100 + random.nextInt(901));
                     territoryModel.setFood(100 + random.nextInt(901));
                     territoryRepository.save(territoryModel);
                 }
+            }
+        }
+    }
+    @Transactional
+    @Scheduled(cron = "0 0/10 * * * ?")
+    public void addResources(){
+        List<TerritoryModel> territories = territoryRepository.findAll();
+
+        for(TerritoryModel territory: territories){
+            UserModel owner = territory.getOwner();
+            if(owner!=null){
+                InventoryModel inventory =  inventoryRepository.findByUserId(owner);
+                HashMap<Item,Integer> items = inventory.getInventory();
+                int current = items.get(Item.FOOD);
+                items.put(Item.FOOD, Math.min(1000000000,current+territory.getFood()));
+                current = items.get(Item.WOOD);
+                items.put(Item.WOOD, Math.min(1000000000,current+territory.getWood()));
+                current = items.get(Item.GOLD);
+                items.put(Item.GOLD, Math.min(1000000000,current+territory.getGold()));
+                inventory.setInventory(items);
+                inventoryRepository.save(inventory);
             }
         }
     }

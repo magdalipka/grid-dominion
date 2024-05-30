@@ -1,9 +1,12 @@
 package com.example.griddominion.services;
 
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import com.example.griddominion.utils.Constants;
+import com.example.griddominion.utils.Item;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,8 @@ import org.springframework.stereotype.Service;
 import com.example.griddominion.models.api.input.UserCreationInput;
 import com.example.griddominion.models.db.SessionModel;
 import com.example.griddominion.models.db.UserModel;
+import com.example.griddominion.models.db.InventoryModel;
+import com.example.griddominion.repositories.InventoryRepository;
 import com.example.griddominion.repositories.SessionRepository;
 import com.example.griddominion.repositories.UserRepository;
 import com.example.griddominion.utils.PasswordHash;
@@ -32,6 +37,8 @@ public class UserService {
   UserRepository userRepository;
   @Autowired
   SessionRepository sessionRepository;
+  @Autowired
+  InventoryRepository inventoryRepository;
 
   public UserModel createUser(UserCreationInput input) {
 
@@ -57,20 +64,30 @@ public class UserService {
 
     try {
       userRepository.insert(user.getId(), user.getHashedPassword(), user.getCreatedAt(), user.getNick(), user.getLevel(), user.getExperience(), user.getExperienceToLevelUp());
+      InventoryModel inventory = new InventoryModel();
+      inventory.setUser(user);
+      HashMap<Item, Integer> inventoryHashMap =  new HashMap<>();
+      inventoryHashMap.put(Item.GOLD,1000);
+      inventoryHashMap.put(Item.FOOD,1000);
+      inventoryHashMap.put(Item.WOOD,1000);
+      inventory.setInventory(inventoryHashMap);
+      inventoryRepository.save(inventory);
     } catch (DataIntegrityViolationException e) {
       throw new ResourceConflict("User with nick " + input.nick + " already exists");
     }
+
 
     return user;
   }
 
   public void deleteUser(String id) {
     UserModel user = userRepository.findById(id).orElse(null);
+    InventoryModel inventory = inventoryRepository.findByUserId(user);
 
     if (user == null) {
       throw new Unauthorized("User not found");
     }
-
+    inventoryRepository.delete(inventory);
     userRepository.delete(user);
   }
 

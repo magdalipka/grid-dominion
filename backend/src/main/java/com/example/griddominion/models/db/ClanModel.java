@@ -1,14 +1,10 @@
 package com.example.griddominion.models.db;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.griddominion.utils.Constants;
-import com.example.griddominion.utils.errors.InsufficientStorage;
-import com.example.griddominion.utils.errors.NotFound;
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(name = "clans")

@@ -24,7 +24,7 @@ public class InventoryService {
 
     // TODO ?
 
-    public boolean addToInventory(InventoryModel inventoryModel, Item item, int number){
+    /*public boolean addToInventory(InventoryModel inventoryModel, Item item, int number){
         if(inventoryModel.getInventory().containsKey(item)){
             inventoryModel.getInventory().put(item, inventoryModel.getInventory().get(item) + number);
         }
@@ -48,6 +48,6 @@ public class InventoryService {
         }
 
         // how to handle error if number is greater than user possess?
-    }
+    }*/
 
 }

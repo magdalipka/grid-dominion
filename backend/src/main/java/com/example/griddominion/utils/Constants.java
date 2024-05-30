@@ -18,6 +18,12 @@ public final class Constants {
 
     public static final int MAX_CLAN_MEMBERS = 30;
 
+    public static final double START_LATITUDE = 50.12489;
+    public static final double START_LONGITUDE = 19.75846;
+    public static final double DIFF_LATITUDE= 0.001214;
+    public static final double DIFF_LONGITUDE = 0.001894;
+
+    public static final int RESOURCE_LIMIT = 1000000000;
     private Constants() {
         // Prevent instantiation
     }

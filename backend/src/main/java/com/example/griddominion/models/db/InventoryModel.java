@@ -1,7 +1,6 @@
 package com.example.griddominion.models.db;
 
 import com.example.griddominion.utils.Item;
-import com.example.griddominion.utils.errors.InsufficientStorage;
 import jakarta.persistence.*;
 
 import java.util.HashMap;

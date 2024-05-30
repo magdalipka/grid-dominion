@@ -23,6 +23,7 @@ public final class Constants {
     public static final double DIFF_LATITUDE= 0.001214;
     public static final double DIFF_LONGITUDE = 0.001894;
 
+    public static final int RESOURCE_LIMIT = 1000000000;
     private Constants() {
         // Prevent instantiation
     }

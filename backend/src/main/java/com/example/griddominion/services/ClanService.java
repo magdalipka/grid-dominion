@@ -1,15 +1,24 @@
 package com.example.griddominion.services;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import com.example.griddominion.models.api.input.ClanCreationInput;
+import com.example.griddominion.models.api.input.ResourcesTransferInput;
 import com.example.griddominion.models.db.ClanModel;
+import com.example.griddominion.models.db.InventoryModel;
 import com.example.griddominion.models.db.UserModel;
 import com.example.griddominion.repositories.ClanRepository;
+import com.example.griddominion.repositories.InventoryRepository;
+import com.example.griddominion.repositories.UserRepository;
 import com.example.griddominion.utils.Constants;
+import com.example.griddominion.utils.Item;
 import com.example.griddominion.utils.errors.*;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +29,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 public class ClanService {
     @Autowired
     ClanRepository clanRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    InventoryRepository inventoryRepository;
 
     public ClanModel createClan(ClanCreationInput input) {
 
@@ -93,6 +106,51 @@ public class ClanService {
 
     public List<ClanModel> getAllClans() {
         return clanRepository.findAll();
+    }
+
+    @Transactional
+    public void sendResources(ResourcesTransferInput resourcesTransferInput){
+        UserModel sender = userRepository.findByNick(resourcesTransferInput.senderNick);
+        UserModel reciver = userRepository.findByNick(resourcesTransferInput.reciverNick);
+        if(sender == null || reciver == null){
+            throw new Unauthorized("User not found");
+        }
+        if (sender.getClan() == null || reciver.getClan() == null) {
+            throw new Forbidden("Some user is not in clan");
+        }
+        if (!sender.getClan().equals(reciver.getClan())) {
+            throw new Forbidden("Users are not in the same clan");
+        }
+
+        InventoryModel send = sender.getInventory();
+        HashMap<Item,Integer> hashSend = send.getInventory();
+        int goldSender, woodSender, foodSender, goldReciver, woodReciver,foodReciver;
+        goldSender = hashSend.get(Item.GOLD)-resourcesTransferInput.gold;
+        foodSender = hashSend.get(Item.FOOD)-resourcesTransferInput.food;
+        woodSender = hashSend.get(Item.WOOD)-resourcesTransferInput.wood;
+        if(goldSender < 0 || foodSender < 0 || woodSender < 0){
+            throw new BadRequest("Not enough resources");
+        }
+        InventoryModel recive = reciver.getInventory();
+        HashMap<Item,Integer> hashRecive = recive.getInventory();
+        goldReciver= hashRecive.get(Item.GOLD)+resourcesTransferInput.gold;
+        foodReciver = hashRecive.get(Item.FOOD)+resourcesTransferInput.food;
+        woodReciver = hashRecive.get(Item.WOOD)+resourcesTransferInput.wood;
+
+        if(goldReciver > Constants.RESOURCE_LIMIT || foodReciver > Constants.RESOURCE_LIMIT || woodReciver > Constants.RESOURCE_LIMIT){
+            throw new BadRequest("To much resources sent");
+        }
+        hashSend.put(Item.GOLD, goldSender);
+        hashSend.put(Item.FOOD, foodSender);
+        hashSend.put(Item.WOOD, woodSender);
+        send.setInventory(hashSend);
+        hashRecive.put(Item.GOLD, goldReciver);
+        hashRecive.put(Item.FOOD, foodReciver);
+        hashRecive.put(Item.WOOD, woodReciver);
+        recive.setInventory(hashRecive);
+
+        inventoryRepository.save(send);
+        inventoryRepository.save(recive);
     }
 
 }

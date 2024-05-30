@@ -3,9 +3,11 @@ package com.example.griddominion.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.griddominion.models.api.input.ClanCreationInput;
+import com.example.griddominion.models.api.input.ResourcesTransferInput;
 import com.example.griddominion.models.api.output.ClanOutput;
 import com.example.griddominion.services.ClanService;
 import com.example.griddominion.utils.Headers;
+
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,5 +41,11 @@ public class ClanController {
                 .map(ClanOutput::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(clanOutputs);
+    }
+
+    @PostMapping("/sendResources")
+    public ResponseEntity<?> sendResources(@RequestBody ResourcesTransferInput resourcesTransferInput) {
+            clanService.sendResources(resourcesTransferInput);
+            return ResponseEntity.ok().body("Resources transferred successfully.");
     }
 }

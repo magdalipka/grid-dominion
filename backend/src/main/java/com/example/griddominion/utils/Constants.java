@@ -16,6 +16,8 @@ public final class Constants {
 
     public static final int MAX_CLAN_LEVEL = 10;
 
+    public static final int MAX_CLAN_MEMBERS = 30;
+
     private Constants() {
         // Prevent instantiation
     }

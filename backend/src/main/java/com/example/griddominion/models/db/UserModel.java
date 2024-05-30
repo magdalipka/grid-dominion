@@ -23,6 +23,9 @@ public class UserModel {
   @Column(name = "nick")
   private String nick;
 
+  @Column(name = "coordinates")
+  private CoordinatesModel coordinates;
+
   @Column(name = "level")
   private int level;
 
@@ -75,6 +78,14 @@ public class UserModel {
 
   public void setNick(String nick) {
     this.nick = nick;
+  }
+
+  public CoordinatesModel getCoordinates(){
+    return coordinates;
+  }
+
+  public void setCoordinates(CoordinatesModel coordinates) {
+    this.coordinates = coordinates;
   }
 
   public int getExperience(){

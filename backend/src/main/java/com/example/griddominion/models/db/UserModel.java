@@ -35,6 +35,9 @@ public class UserModel {
   @Column(name = "experienceToLevelUp")
   private int experienceToLevelUp;
 
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  private InventoryModel inventory;
+
   @ManyToOne
   @JoinColumn(name = "clanId")
   private ClanModel clan;
@@ -121,6 +124,14 @@ public class UserModel {
 
   public void setExperienceToLevelUp(int experienceToLevelUp) {
     this.experienceToLevelUp = experienceToLevelUp;
+  }
+
+  public InventoryModel getInventory() {
+    return inventory;
+  }
+
+  public void setInventory(InventoryModel inventory) {
+    this.inventory = inventory;
   }
 
   public ClanModel getClan() {

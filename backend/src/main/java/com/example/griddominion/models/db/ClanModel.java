@@ -15,6 +15,9 @@ public class ClanModel {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "admin")
+    private UserModel admin;
+
     @Column(name = "isPrivate")
     private boolean isPrivate;
 
@@ -30,6 +33,8 @@ public class ClanModel {
     @OneToMany(mappedBy = "clan", fetch = FetchType.LAZY)
     private List<UserModel> users;
 
+    @Column(name = "usersToApprove")
+    private List<UserModel> usersToApprove;
 
     public String getId() {
         return id;
@@ -103,4 +108,19 @@ public class ClanModel {
         return this.users;
     }
 
+    public UserModel getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(UserModel admin){
+        this.admin = admin;
+    }
+
+    public List<UserModel> getUsersToApprove(){
+        return usersToApprove;
+    }
+
+    public void setUsersToApprove(List<UserModel> usersToApprove){
+        this.usersToApprove = usersToApprove;
+    }
 }

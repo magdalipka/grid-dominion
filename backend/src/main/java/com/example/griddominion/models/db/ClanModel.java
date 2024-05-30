@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.griddominion.utils.Constants;
+import com.example.griddominion.utils.errors.InsufficientStorage;
+import com.example.griddominion.utils.errors.NotFound;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -101,16 +103,8 @@ public class ClanModel {
         this.users = new ArrayList<>();
     }
 
-    public void addUser(UserModel user) {
-        if (users.size() < 30) {
-            users.add(user);
-            user.setClan(this);
-        }
-    }
-
-    public void removeUser(UserModel user) {
-        users.remove(user);
-        user.setClan(null);
+    public List<UserModel> getUsersList(){
+        return this.users;
     }
 
 }

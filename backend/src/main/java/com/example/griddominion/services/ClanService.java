@@ -1,18 +1,17 @@
 package com.example.griddominion.services;
 
 
+import java.util.List;
 import java.util.UUID;
 
 import com.example.griddominion.models.api.input.ClanCreationInput;
 import com.example.griddominion.models.db.ClanModel;
+import com.example.griddominion.models.db.UserModel;
 import com.example.griddominion.repositories.ClanRepository;
 import com.example.griddominion.utils.Constants;
+import com.example.griddominion.utils.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.griddominion.utils.errors.BadRequest;
-import com.example.griddominion.utils.errors.NotFound;
-import com.example.griddominion.utils.errors.ResourceConflict;
-import com.example.griddominion.utils.errors.Unauthorized;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -69,6 +68,31 @@ public class ClanService {
         }
 
         return clan;
+    }
+
+
+    public void addUserToClan(UserModel user, ClanModel clan) {
+        if (clan.getUsersList().size() < Constants.MAX_CLAN_MEMBERS) {
+            clan.getUsersList().add(user);
+            user.setClan(clan);
+        }
+        else {
+            throw new InsufficientStorage("Clan is full!");
+        }
+    }
+
+    public void removeUser(UserModel user, ClanModel clan) {
+        if(clan.getUsersList().contains(user)) {
+            clan.getUsersList().remove(user);
+            user.setClan(null);
+        }
+        else {
+            throw new NotFound("There is no such user in clan.");
+        }
+    }
+
+    public List<ClanModel> getAllClans() {
+        return clanRepository.findAll();
     }
 
 }

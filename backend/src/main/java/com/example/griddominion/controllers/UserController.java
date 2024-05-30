@@ -1,7 +1,6 @@
 package com.example.griddominion.controllers;
 
 import com.example.griddominion.models.api.input.CoordinateInput;
-import com.example.griddominion.models.api.input.UserClanInput;
 import com.example.griddominion.models.api.output.CoordinatesOutput;
 import com.example.griddominion.models.db.CoordinatesModel;
 import com.example.griddominion.models.db.UserModel;

@@ -29,7 +29,7 @@ public class ClanController {
         var clan = clanService.createClan(input);
         var clanOutput = new ClanOutput(clan);
         return ResponseEntity.ok().headers(
-                new Headers().addSid(clan.getId())).body(clanOutput);  // good?? idk what that is
+                new Headers().addSid(clan.getId())).body(clanOutput);
     }
 
     @GetMapping()

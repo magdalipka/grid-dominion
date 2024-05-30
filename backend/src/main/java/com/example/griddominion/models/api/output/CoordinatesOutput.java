@@ -1,10 +1,10 @@
 package com.example.griddominion.models.api.output;
 
 public class CoordinatesOutput {
-    public int x;
-    public int y;
+    public double x;
+    public double y;
 
-    public CoordinatesOutput(int x, int y){
+    public CoordinatesOutput(double x, double y){
         this.x = x;
         this.y = y;
     }

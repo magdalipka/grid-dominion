@@ -39,13 +39,13 @@ public class TerritoryService {
         
             Random random = new Random();
 
-            for(int i = 0; i <200;i++){
-                for(int j = 0; j<150; j++){
+            for(int i = 0; i <150;i++){
+                for(int j = 0; j<200; j++){
                     TerritoryModel territoryModel = new TerritoryModel();
                     territoryModel.setMaxLatitude(Constants.START_LATITUDE - i*Constants.DIFF_LATITUDE);
                     territoryModel.setMinLatitude(Constants.START_LATITUDE - (i+1)*Constants.DIFF_LATITUDE);
-                    territoryModel.setMinLongitude(Constants.START_LONGITUDE + i*Constants.DIFF_LONGITUDE);
-                    territoryModel.setMaxLongitude(Constants.START_LONGITUDE+ (i+1)*Constants.DIFF_LONGITUDE);
+                    territoryModel.setMinLongitude(Constants.START_LONGITUDE + j*Constants.DIFF_LONGITUDE);
+                    territoryModel.setMaxLongitude(Constants.START_LONGITUDE+ (j+1)*Constants.DIFF_LONGITUDE);
                     territoryModel.setGold(100 + random.nextInt(901));
                     territoryModel.setWood(100 + random.nextInt(901));
                     territoryModel.setFood(100 + random.nextInt(901));
@@ -65,11 +65,11 @@ public class TerritoryService {
                 InventoryModel inventory =  inventoryRepository.findByUserId(owner);
                 HashMap<Item,Integer> items = inventory.getInventory();
                 int current = items.get(Item.FOOD);
-                items.put(Item.FOOD, Math.min(1000000000,current+territory.getFood()));
+                items.put(Item.FOOD, Math.min(Constants.RESOURCE_LIMIT,current+territory.getFood()));
                 current = items.get(Item.WOOD);
-                items.put(Item.WOOD, Math.min(1000000000,current+territory.getWood()));
+                items.put(Item.WOOD, Math.min(Constants.RESOURCE_LIMIT,current+territory.getWood()));
                 current = items.get(Item.GOLD);
-                items.put(Item.GOLD, Math.min(1000000000,current+territory.getGold()));
+                items.put(Item.GOLD, Math.min(Constants.RESOURCE_LIMIT,current+territory.getGold()));
                 inventory.setInventory(items);
                 inventoryRepository.save(inventory);
             }

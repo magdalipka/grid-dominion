@@ -42,10 +42,10 @@ public class TerritoryService {
             for(int i = 0; i <150;i++){
                 for(int j = 0; j<200; j++){
                     TerritoryModel territoryModel = new TerritoryModel();
-                    territoryModel.setMaxLatitude(Constants.START_LATITUDE - i*Constants.DIFF_LATITUDE);
-                    territoryModel.setMinLatitude(Constants.START_LATITUDE - (i+1)*Constants.DIFF_LATITUDE);
-                    territoryModel.setMinLongitude(Constants.START_LONGITUDE + j*Constants.DIFF_LONGITUDE);
-                    territoryModel.setMaxLongitude(Constants.START_LONGITUDE+ (j+1)*Constants.DIFF_LONGITUDE);
+                    territoryModel.setMaxLatitude(Constants.START_LATITUDE - (double)i*Constants.DIFF_LATITUDE);
+                    territoryModel.setMinLatitude(Constants.START_LATITUDE - (double)(i+1)*Constants.DIFF_LATITUDE);
+                    territoryModel.setMinLongitude(Constants.START_LONGITUDE + (double)j*Constants.DIFF_LONGITUDE);
+                    territoryModel.setMaxLongitude(Constants.START_LONGITUDE+ (double)(j+1)*Constants.DIFF_LONGITUDE);
                     territoryModel.setGold(100 + random.nextInt(901));
                     territoryModel.setWood(100 + random.nextInt(901));
                     territoryModel.setFood(100 + random.nextInt(901));
@@ -96,4 +96,5 @@ public class TerritoryService {
         territory.setOwner(user);
         territoryRepository.save(territory);
     }
+
 }

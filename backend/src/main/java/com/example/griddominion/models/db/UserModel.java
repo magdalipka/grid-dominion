@@ -1,7 +1,5 @@
 package com.example.griddominion.models.db;
 
-
-
 import java.time.LocalDateTime;
 
 import com.example.griddominion.utils.Constants;
@@ -26,14 +24,14 @@ public class UserModel {
   @Column(name = "coordinates")
   private CoordinatesModel coordinates;
 
-  @Column(name = "level")
-  private int level;
+  @Column(name = "level", nullable = true)
+  private Integer level;
 
-  @Column(name = "experience")
-  private int experience;
+  @Column(name = "experience", nullable = true)
+  private Integer experience;
 
-  @Column(name = "experienceToLevelUp")
-  private int experienceToLevelUp;
+  @Column(name = "experienceToLevelUp", nullable = true)
+  private Integer experienceToLevelUp;
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
   private InventoryModel inventory;
@@ -42,10 +40,8 @@ public class UserModel {
   @JoinColumn(name = "clanId")
   private ClanModel clan;
 
-
   public UserModel() {
   }
-
 
   public String getId() {
     return id;
@@ -83,7 +79,7 @@ public class UserModel {
     this.nick = nick;
   }
 
-  public CoordinatesModel getCoordinates(){
+  public CoordinatesModel getCoordinates() {
     return coordinates;
   }
 
@@ -91,18 +87,18 @@ public class UserModel {
     this.coordinates = coordinates;
   }
 
-  public int getExperience(){
+  public int getExperience() {
     return experience;
   }
 
-  public void setExperience(int experience){
+  public void setExperience(int experience) {
     this.experience = experience;
   }
 
-  public void earnExperience(int experience){
+  public void earnExperience(int experience) {
     this.experience += experience;
-    if(getExperience() >= getExperienceToLevelUp()){
-      if(getLevel() < Constants.MAX_USER_LEVEL) {
+    if (getExperience() >= getExperienceToLevelUp()) {
+      if (getLevel() < Constants.MAX_USER_LEVEL) {
         setLevel(level + 1);
         setExperience(0);
         setExperienceToLevelUp((int) Math.round((Math.pow(level, 1.2)) * Constants.BASE_EXPERIENCE));

@@ -28,7 +28,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           method: "GET",
         })
       ).json();
-      console.log({ res });
+      if (res.id) {
+        setSession(res);
+      }
     } catch (error) {
       console.error({ error });
     }

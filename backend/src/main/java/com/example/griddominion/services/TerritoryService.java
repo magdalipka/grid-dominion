@@ -37,23 +37,34 @@ public class TerritoryService {
     public void initTerritories(){
         if(territoryRepository.findAll().isEmpty()){
         
-            Random random = new Random();
+      // https://krakow.stat.gov.pl/cps/rde/xbcr/krak/ASSETS_07m01_01.pdf
+        double north_most = 50.117;
+        double south_most = 49.966;
+        double west_most = 19.783;
+        double east_most = 20.217;
 
-            for(int i = 0; i <150;i++){
-                for(int j = 0; j<200; j++){
-                    TerritoryModel territoryModel = new TerritoryModel();
-                    territoryModel.setMaxLatitude(Constants.START_LATITUDE - (double)i*Constants.DIFF_LATITUDE);
-                    territoryModel.setMinLatitude(Constants.START_LATITUDE - (double)(i+1)*Constants.DIFF_LATITUDE);
-                    territoryModel.setMinLongitude(Constants.START_LONGITUDE + (double)j*Constants.DIFF_LONGITUDE);
-                    territoryModel.setMaxLongitude(Constants.START_LONGITUDE+ (double)(j+1)*Constants.DIFF_LONGITUDE);
-                    territoryModel.setGold(100 + random.nextInt(901));
-                    territoryModel.setWood(100 + random.nextInt(901));
-                    territoryModel.setFood(100 + random.nextInt(901));
-                    territoryRepository.save(territoryModel);
-                }
-            }
+        int squares = 50;
+        double diff_latitude = (north_most - south_most) / squares;
+        double diff_longitude = (east_most - west_most) / squares;
+
+        Random random = new Random();
+
+        for (int i = 0; i < squares; i++) {
+          for (int j = 0; j < squares; j++) {
+            TerritoryModel territoryModel = new TerritoryModel();
+            territoryModel.setMinLatitude(south_most + i * diff_latitude);
+            territoryModel.setMaxLatitude(south_most + ((i + 1) * diff_latitude));
+            territoryModel.setMinLongitude(west_most + j * diff_longitude);
+            territoryModel.setMaxLongitude(west_most + (j + 1) * diff_longitude);
+            territoryModel.setGold(100 + random.nextInt(901));
+            territoryModel.setWood(100 + random.nextInt(901));
+            territoryModel.setFood(100 + random.nextInt(901));
+            territoryRepository.save(territoryModel);
+          }
         }
+      }
     }
+
     @Transactional
     @Scheduled(cron = "0 0/10 * * * ?")
     public void addResources(){

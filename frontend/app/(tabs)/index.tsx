@@ -20,6 +20,30 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { TerritoryDetails } from "@/components/TerritoryDetails";
+import * as TaskManager from "expo-task-manager";
+import { request } from "@/lib/request";
+
+// const LOCATION_TASK_NAME = "griddominion-update-location";
+
+// TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
+//   console.log({ data, error });
+//   if (error) {
+//     return;
+//   }
+//   if (data) {
+//     const { locations } = data;
+//     const res = await (
+//       await request("/users", {
+//         method: "POST",
+//         headers: {
+//           "content-type": "application/json",
+//         },
+//         body: JSON.stringify(locations),
+//       })
+//     ).json();
+//     console.log({ res });
+//   }
+// });
 
 export default function HomeScreen() {
   const { user } = useAuth();
@@ -37,13 +61,18 @@ export default function HomeScreen() {
       const { status: foregroundPermissionStatus } =
         await Location.requestForegroundPermissionsAsync();
       const { status: backgroundPermissionStatus } =
-        await Location.requestForegroundPermissionsAsync();
+        await Location.requestBackgroundPermissionsAsync();
       if (
         foregroundPermissionStatus === "granted" ||
         backgroundPermissionStatus === "granted"
       ) {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location.coords);
+        // await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+        //   accuracy: Location.Accuracy.Highest,
+        //   distanceInterval: 0,
+        //   timeInterval: 5,
+        // });
       }
     })();
   }, []);
@@ -121,7 +150,7 @@ export default function HomeScreen() {
           onDismiss={handleCloseModal}
         >
           <BottomSheetView style={bottomSheetStyles.contentContainer}>
-            <TerritoryDetails territory={{ ...selectedTerritory, ownerNick: "hello" }} />
+            <TerritoryDetails territory={selectedTerritory} />
           </BottomSheetView>
         </BottomSheetModal>
       </BottomSheetModalProvider>

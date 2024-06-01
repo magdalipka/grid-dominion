@@ -17,6 +17,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "@/lib/colors";
 import * as Location from "expo-location";
+import { request } from "@/lib/request";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -31,8 +32,29 @@ export default function TabLayout() {
     (async () => {
       await Location.enableNetworkProviderAsync();
       await Location.requestForegroundPermissionsAsync();
-      await Location.requestForegroundPermissionsAsync();
+      await Location.requestBackgroundPermissionsAsync();
     })();
+  }, []);
+
+  // workaround until background fetch starts working
+  React.useEffect(() => {
+    const interval = setInterval(async () => {
+      let location = await Location.getCurrentPositionAsync({});
+      const res = await (
+        await request("/users/coord", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            x: location.coords.longitude,
+            y: location.coords.latitude,
+          }),
+        })
+      ).json();
+      console.log({ res, location });
+    }, 1000 * 60);
+    return () => clearInterval(interval);
   }, []);
 
   if (isLoading) {

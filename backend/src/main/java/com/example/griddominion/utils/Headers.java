@@ -12,8 +12,8 @@ public class Headers extends HttpHeaders {
   public Headers addSid(String sid) {
     var cookie = ResponseCookie
         .from("sid", sid)
-        .secure(true)
-        .httpOnly(true)
+        .secure(false)
+        .httpOnly(false)
         .path("/")
         .maxAge(3600 * 24)
         .build();

@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "@/lib/colors";
+import * as Location from "expo-location";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -25,6 +26,14 @@ export default function TabLayout() {
   const [password, onPasswordInput] = React.useState("");
 
   const [hasAccount, setHasAccount] = React.useState(true);
+
+  React.useEffect(() => {
+    (async () => {
+      await Location.enableNetworkProviderAsync();
+      await Location.requestForegroundPermissionsAsync();
+      await Location.requestForegroundPermissionsAsync();
+    })();
+  }, []);
 
   if (isLoading) {
     return (
@@ -82,7 +91,6 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
       }}
     >
@@ -92,6 +100,15 @@ export default function TabLayout() {
           title: "Home",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? "home" : "home-outline"} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="inventory"
+        options={{
+          title: "Inventory",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? "cube" : "cube-outline"} color={color} />
           ),
         }}
       />

@@ -1,11 +1,25 @@
-import { Image, StyleSheet, View, Text } from "react-native";
+import { Image, StyleSheet, View, Text, Button } from "react-native";
 
 import { useAuth } from "@/contexts/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MapView from "react-native-maps";
-import React from "react";
+import MapView, { Marker, Polygon } from "react-native-maps";
+import React, { useCallback, useRef, useState } from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import * as Location from "expo-location";
+import {
+  Territory,
+  useCurrentTerritory,
+  useTerritories,
+  useVisibleTerritories,
+} from "@/hooks/useTerritories";
+import BottomSheet, {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { TerritoryDetails } from "@/components/TerritoryDetails";
 
 export default function HomeScreen() {
   const { user } = useAuth();
@@ -15,13 +29,15 @@ export default function HomeScreen() {
     latitude: number;
   } | null>(null);
 
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
   React.useEffect(() => {
     (async () => {
+      await Location.enableNetworkProviderAsync();
       const { status: foregroundPermissionStatus } =
         await Location.requestForegroundPermissionsAsync();
       const { status: backgroundPermissionStatus } =
         await Location.requestForegroundPermissionsAsync();
-      await Location.enableNetworkProviderAsync();
       if (
         foregroundPermissionStatus === "granted" ||
         backgroundPermissionStatus === "granted"
@@ -32,7 +48,23 @@ export default function HomeScreen() {
     })();
   }, []);
 
-  if (!location) {
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleCloseModal = useCallback(() => {
+    setSelectedTerritory(undefined);
+  }, []);
+
+  const { territories, isLoading } = useVisibleTerritories({
+    ...location,
+    radius: 0.04,
+  });
+
+  const { territory: currentTerritory } = useCurrentTerritory({ ...location });
+
+  const [selectedTerritory, setSelectedTerritory] = useState<Territory>();
+
+  if (!location || isLoading) {
     return (
       <View>
         <Text>Loading...</Text>
@@ -41,17 +73,59 @@ export default function HomeScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>{JSON.stringify({ user })}</Text>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          ...location,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.05,
-        }}
-      />
-    </SafeAreaView>
+    <GestureHandlerRootView>
+      <BottomSheetModalProvider>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            ...location,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+          }}
+          showsUserLocation
+          followsUserLocation
+          minZoomLevel={13}
+        >
+          {territories.map((t) => (
+            <Polygon
+              key={t.id}
+              coordinates={[
+                { latitude: t.maxLatitude, longitude: t.maxLongitude },
+                { latitude: t.maxLatitude, longitude: t.minLongitude },
+                { latitude: t.minLatitude, longitude: t.minLongitude },
+                { latitude: t.minLatitude, longitude: t.maxLongitude },
+              ]}
+              fillColor="#00005555"
+              strokeWidth={
+                t.id === selectedTerritory?.id
+                  ? 1
+                  : t.id === currentTerritory?.id
+                  ? 0.1
+                  : 0
+              }
+              tappable
+              onPress={() => {
+                setSelectedTerritory(t);
+                handlePresentModalPress();
+              }}
+            />
+          ))}
+        </MapView>
+        <BottomSheetModal
+          ref={bottomSheetModalRef}
+          snapPoints={["50%"]}
+          // style={styles.container}
+          enableDynamicSizing
+          enablePanDownToClose
+          enableDismissOnClose
+          onDismiss={handleCloseModal}
+        >
+          <BottomSheetView style={bottomSheetStyles.contentContainer}>
+            <TerritoryDetails territory={{ ...selectedTerritory, ownerNick: "hello" }} />
+          </BottomSheetView>
+        </BottomSheetModal>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -62,5 +136,12 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
+  },
+});
+
+const bottomSheetStyles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    alignItems: "center",
   },
 });

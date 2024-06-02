@@ -1,15 +1,16 @@
 import { request } from "@/lib/request";
 import { useQuery } from "@tanstack/react-query";
 
-export const useInventory = () =>
+export const useMyClan = () =>
   useQuery({
-    queryKey: ["inventory"],
+    queryKey: ["my-clan"],
     queryFn: async () => {
       const res = await (
-        await request("/inventories", {
+        await request("/users", {
           method: "GET",
         })
       ).json();
-      return res.inventoryHashMap as { WOOD: number; FOOD: number; GOLD: number };
+      console.log({ res });
+      return res.inventory;
     },
   });

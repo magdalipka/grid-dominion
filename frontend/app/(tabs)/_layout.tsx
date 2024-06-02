@@ -134,6 +134,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="clan"
+        options={{
+          title: "My clan",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? "people" : "people-outline"} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

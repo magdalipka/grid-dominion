@@ -13,13 +13,12 @@ import jakarta.transaction.Transactional;
 
 public interface ClanRepository extends JpaRepository<ClanModel, String> {
 
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO clans (id, name, isPrivate, level, experience, experienceToLevelUp) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", nativeQuery = true)
-    void insert(String id, String name, boolean isPrivate, int level, int experience, int experienceToLevelUp)
-            throws DataIntegrityViolationException;
+  @Modifying
+  @Transactional
+  @Query(value = "INSERT INTO clans (id, name, is_private, level, experience, experience_to_level_up) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", nativeQuery = true)
+  void insert(String id, String name, boolean isPrivate, int level, int experience, int experienceToLevelUp)
+      throws DataIntegrityViolationException;
 
-    List<ClanModel> findAll(); // JPA generates method automatically?
-
+  List<ClanModel> findAll(); // JPA generates method automatically?
 
 }

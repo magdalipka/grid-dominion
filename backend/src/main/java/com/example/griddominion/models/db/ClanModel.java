@@ -19,17 +19,17 @@ public class ClanModel {
   @JoinColumn(name = "admin_id", nullable = false, insertable = false, updatable = false)
   private UserModel admin;
 
-  @Column(name = "isPrivate")
-  private boolean isPrivate;
+  @Column(name = "is_private", nullable = true)
+  private Boolean isPrivate;
 
-  @Column(name = "level")
-  private int level;
+  @Column(name = "level", nullable = true)
+  private Integer level;
 
-  @Column(name = "experience")
-  private int experience;
+  @Column(name = "experience", nullable = true)
+  private Integer experience;
 
-  @Column(name = "experienceToLevelUp")
-  private int experienceToLevelUp;
+  @Column(name = "experience_to_level_up", nullable = true)
+  private Integer experienceToLevelUp;
 
   @OneToMany(mappedBy = "clan", fetch = FetchType.LAZY)
   private List<UserModel> users;

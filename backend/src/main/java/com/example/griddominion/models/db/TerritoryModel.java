@@ -1,6 +1,5 @@
 package com.example.griddominion.models.db;
 
-
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -17,122 +16,123 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "territories")
 public class TerritoryModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", nullable = true)
-    private UserModel owner;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "owner_id", nullable = true)
+  private UserModel owner;
 
-    @Column(name = "max_latitude")
-    private double maxLatitude;
+  @Column(name = "max_latitude")
+  private double maxLatitude;
 
-    @Column(name = "min_latitude")
-    private double minLatitude;
+  @Column(name = "min_latitude")
+  private double minLatitude;
 
-    @Column(name = "max_longitude")
-    private double maxLongitude;
+  @Column(name = "max_longitude")
+  private double maxLongitude;
 
-    @Column(name = "min_longitude")
-    private double minLongitude;
+  @Column(name = "min_longitude")
+  private double minLongitude;
 
-    @Column(name = "gold")
-    private int gold;
+  @Column(name = "gold")
+  private int gold;
 
-    @Column(name = "wood")
-    private int wood;
+  @Column(name = "wood")
+  private int wood;
 
-    @Column(name = "food")
-    private int food;
-    @OneToMany(mappedBy = "buildings", fetch = FetchType.LAZY)
-    private List<BuildingModel> buildings;
+  @Column(name = "food")
+  private int food;
 
-    public List<BuildingModel> getBuildings() {
-        return buildings;
-    }
+  @OneToMany(mappedBy = "territory", fetch = FetchType.LAZY)
+  private List<BuildingModel> buildings;
 
-    public void setBuildings(List<BuildingModel> buildings) {
-        this.buildings = buildings;
-    }
+  public List<BuildingModel> getBuildings() {
+    return buildings;
+  }
 
-    public int getId() {
-        return id;
-    }
+  public void setBuildings(List<BuildingModel> buildings) {
+    this.buildings = buildings;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public UserModel getOwner() {
-        return owner;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public void setOwner(UserModel owner) {
-        this.owner = owner;
-    }
+  public UserModel getOwner() {
+    return owner;
+  }
 
-    public double getMaxLatitude() {
-        return maxLatitude;
-    }
+  public void setOwner(UserModel owner) {
+    this.owner = owner;
+  }
 
-    public void setMaxLatitude(double maxLatitude) {
-        this.maxLatitude = maxLatitude;
-    }
+  public double getMaxLatitude() {
+    return maxLatitude;
+  }
 
-    public double getMinLatitude() {
-        return minLatitude;
-    }
+  public void setMaxLatitude(double maxLatitude) {
+    this.maxLatitude = maxLatitude;
+  }
 
-    public void setMinLatitude(double minLatitude) {
-        this.minLatitude = minLatitude;
-    }
+  public double getMinLatitude() {
+    return minLatitude;
+  }
 
-    public double getMaxLongitude() {
-        return maxLongitude;
-    }
+  public void setMinLatitude(double minLatitude) {
+    this.minLatitude = minLatitude;
+  }
 
-    public void setMaxLongitude(double maxLongitude) {
-        this.maxLongitude = maxLongitude;
-    }
+  public double getMaxLongitude() {
+    return maxLongitude;
+  }
 
-    public double getMinLongitude() {
-        return minLongitude;
-    }
+  public void setMaxLongitude(double maxLongitude) {
+    this.maxLongitude = maxLongitude;
+  }
 
-    public void setMinLongitude(double minLongitude) {
-        this.minLongitude = minLongitude;
-    }
+  public double getMinLongitude() {
+    return minLongitude;
+  }
 
-    public int getGold() {
-        return gold;
-    }
+  public void setMinLongitude(double minLongitude) {
+    this.minLongitude = minLongitude;
+  }
 
-    public void setGold(int gold) {
-        this.gold = gold;
-    }
+  public int getGold() {
+    return gold;
+  }
 
-    public int getWood() {
-        return wood;
-    }
+  public void setGold(int gold) {
+    this.gold = gold;
+  }
 
-    public void setWood(int wood) {
-        this.wood = wood;
-    }
+  public int getWood() {
+    return wood;
+  }
 
-    public int getFood() {
-        return food;
-    }
+  public void setWood(int wood) {
+    this.wood = wood;
+  }
 
-    public void setFood(int food) {
-        this.food = food;
-    }
+  public int getFood() {
+    return food;
+  }
 
-    @Override
-    public String toString() {
-        return "TerritoryModel [id=" + id + ", owner=" + owner.getNick() + ", maxLatitude=" + maxLatitude + ", minLatitude="
-                + minLatitude + ", maxLongitude=" + maxLongitude + ", minLongitude=" + minLongitude + ", gold=" + gold
-                + ", wood=" + wood + ", food=" + food + "]";
-    }
+  public void setFood(int food) {
+    this.food = food;
+  }
+
+  @Override
+  public String toString() {
+    return "TerritoryModel [id=" + id + ", owner=" + owner.getNick() + ", maxLatitude=" + maxLatitude + ", minLatitude="
+        + minLatitude + ", maxLongitude=" + maxLongitude + ", minLongitude=" + minLongitude + ", gold=" + gold
+        + ", wood=" + wood + ", food=" + food + "]";
+  }
 
 }

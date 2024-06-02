@@ -30,13 +30,13 @@ public class UserModel {
   @Column(name = "experience", nullable = true)
   private Integer experience;
 
-  @Column(name = "experienceToLevelUp", nullable = true)
+  @Column(name = "experience_to_level_up", nullable = true)
   private Integer experienceToLevelUp;
 
-  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private InventoryModel inventory;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "clanId")
   private ClanModel clan;
 

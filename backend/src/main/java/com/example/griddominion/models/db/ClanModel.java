@@ -9,120 +9,120 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "clans")
 public class ClanModel {
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    @Column(name = "name")
-    private String name;
+  @Column(name = "name")
+  private String name;
 
-    @Column(name = "admin")
-    private UserModel admin;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "admin_id", nullable = false, insertable = false, updatable = false)
+  private UserModel admin;
 
-    @Column(name = "isPrivate")
-    private boolean isPrivate;
+  @Column(name = "isPrivate")
+  private boolean isPrivate;
 
-    @Column(name = "level")
-    private int level;
+  @Column(name = "level")
+  private int level;
 
-    @Column(name = "experience")
-    private int experience;
+  @Column(name = "experience")
+  private int experience;
 
-    @Column(name = "experienceToLevelUp")
-    private int experienceToLevelUp;
+  @Column(name = "experienceToLevelUp")
+  private int experienceToLevelUp;
 
-    @OneToMany(mappedBy = "clan", fetch = FetchType.LAZY)
-    private List<UserModel> users;
+  @OneToMany(mappedBy = "clan", fetch = FetchType.LAZY)
+  private List<UserModel> users;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "users_to_approve", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "users_to_approve")
-    private List<UserModel> usersToApprove;
+  @ElementCollection(fetch = FetchType.LAZY)
+  @CollectionTable(name = "users_to_approve", joinColumns = @JoinColumn(name = "id"))
+  @Column(name = "users_to_approve")
+  private List<UserModel> usersToApprove;
 
-    public String getId() {
-        return id;
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public boolean isPrivate() {
+    return this.isPrivate;
+  }
+
+  public void makePrivate() {
+    this.isPrivate = true;
+  }
+
+  public void makePublic() {
+    this.isPrivate = false;
+  }
+
+  public int getExperience() {
+    return experience;
+  }
+
+  public void setExperience(int experience) {
+    this.experience = experience;
+  }
+
+  public void earnExperience(int experience) {
+    this.experience += experience;
+    if (getExperience() >= getExperienceToLevelUp()) {
+      if (getLevel() < Constants.MAX_CLAN_LEVEL) {
+        setLevel(level + 1);
+        setExperience(0);
+        setExperienceToLevelUp((int) Math.round((Math.pow(level, 1.2)) * Constants.BASE_CLAN_EXPERIENCE));
+      }
     }
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public int getLevel() {
+    return level;
+  }
 
+  public void setLevel(int level) {
+    this.level = level;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public int getExperienceToLevelUp() {
+    return experienceToLevelUp;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setExperienceToLevelUp(int experienceToLevelUp) {
+    this.experienceToLevelUp = experienceToLevelUp;
+  }
 
-    public boolean isPrivate(){
-        return this.isPrivate;
-    }
+  public void initUsersList() {
+    this.users = new ArrayList<>();
+  }
 
-    public void makePrivate(){
-        this.isPrivate = true;
-    }
+  public List<UserModel> getUsersList() {
+    return this.users;
+  }
 
-    public void makePublic(){
-        this.isPrivate = false;
-    }
+  public UserModel getAdmin() {
+    return admin;
+  }
 
-    public int getExperience(){
-        return experience;
-    }
+  public void setAdmin(UserModel admin) {
+    this.admin = admin;
+  }
 
-    public void setExperience(int experience){
-        this.experience = experience;
-    }
+  public List<UserModel> getUsersToApprove() {
+    return usersToApprove;
+  }
 
-    public void earnExperience(int experience){
-        this.experience += experience;
-        if(getExperience() >= getExperienceToLevelUp()){
-            if(getLevel() < Constants.MAX_CLAN_LEVEL) {
-                setLevel(level + 1);
-                setExperience(0);
-                setExperienceToLevelUp((int) Math.round((Math.pow(level, 1.2)) * Constants.BASE_CLAN_EXPERIENCE));
-            }
-        }
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getExperienceToLevelUp() {
-        return experienceToLevelUp;
-    }
-
-    public void setExperienceToLevelUp(int experienceToLevelUp) {
-        this.experienceToLevelUp = experienceToLevelUp;
-    }
-
-    public void initUsersList(){
-        this.users = new ArrayList<>();
-    }
-
-    public List<UserModel> getUsersList(){
-        return this.users;
-    }
-
-    public UserModel getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(UserModel admin){
-        this.admin = admin;
-    }
-
-    public List<UserModel> getUsersToApprove(){
-        return usersToApprove;
-    }
-
-    public void setUsersToApprove(List<UserModel> usersToApprove){
-        this.usersToApprove = usersToApprove;
-    }
+  public void setUsersToApprove(List<UserModel> usersToApprove) {
+    this.usersToApprove = usersToApprove;
+  }
 }

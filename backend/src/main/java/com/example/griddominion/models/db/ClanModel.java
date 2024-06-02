@@ -33,7 +33,9 @@ public class ClanModel {
     @OneToMany(mappedBy = "clan", fetch = FetchType.LAZY)
     private List<UserModel> users;
 
-    @Column(name = "usersToApprove")
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "users_to_approve", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "users_to_approve")
     private List<UserModel> usersToApprove;
 
     public String getId() {

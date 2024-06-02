@@ -24,6 +24,32 @@ public final class Constants {
     public static final double DIFF_LONGITUDE = 0.001894;
 
     public static final int RESOURCE_LIMIT = 1000000000;
+
+    public static final double RESOURCE_BONUS = 0.2;
+
+    public static final int INITIAL_GOLD_COST_GOLD_MINE = 500;
+    public static final int INITIAL_WOOD_COST_GOLD_MINE = 200;
+    public static final int INITIAL_FOOD_COST_GOLD_MINE = 100;
+
+    public static final int INITIAL_GOLD_COST_LUMBER_MILL = 300;
+    public static final int INITIAL_WOOD_COST_LUMBER_MILL = 500;
+    public static final int INITIAL_FOOD_COST_LUMBER_MILL = 100;
+
+    public static final int INITIAL_GOLD_COST_FARM = 200;
+    public static final int INITIAL_WOOD_COST_FARM = 100;
+    public static final int INITIAL_FOOD_COST_FARM = 500;
+
+    public static final double UPGRADE_COST_RESOURCE_BUILDING_MULTIPLIER = 1.2;
+
+
+    public static final int INITIAL_GOLD_COST_TOWER = 275;
+    public static final int INITIAL_WOOD_COST_TOWER = 450;
+    public static final int INITIAL_FOOD_COST_TOWER = 50;
+
+    public static final double UPGRADE_COST_TOWER_MULTIPLIER = 1.1;
+
+    public static final int BASE_ATTACK_TOWER = 50;
+    public static final int BASE_HP_MAX_TOWER = 250;
     private Constants() {
         // Prevent instantiation
     }

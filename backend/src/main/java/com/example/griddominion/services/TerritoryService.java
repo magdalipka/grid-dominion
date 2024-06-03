@@ -10,15 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.example.griddominion.factories.BuildingOutputFactory;
 import com.example.griddominion.models.api.input.TerritoryIdInput;
 import com.example.griddominion.models.api.input.TerritoryOwnerInput;
 import com.example.griddominion.models.api.output.BuildingOutput;
-import com.example.griddominion.models.api.output.FarmOutput;
-import com.example.griddominion.models.api.output.GoldMineOutput;
-import com.example.griddominion.models.api.output.LumberMillOutput;
 import com.example.griddominion.models.api.output.TerritoryOutput;
 import com.example.griddominion.models.api.output.TerritoryOwnerOutput;
-import com.example.griddominion.models.api.output.TowerOutput;
 import com.example.griddominion.models.db.TerritoryModel;
 import com.example.griddominion.models.db.TowerModel;
 import com.example.griddominion.models.db.UserModel;
@@ -154,15 +151,7 @@ public class TerritoryService {
       List<BuildingModel> buildingModels = territoryModel.getBuildings();
       List<BuildingOutput> buildingOutputs = new ArrayList<>();
       for (BuildingModel model : buildingModels) {
-          if (model instanceof GoldMineModel) {
-              buildingOutputs.add(new GoldMineOutput((GoldMineModel) model));
-          } else if (model instanceof LumberMillModel) {
-              buildingOutputs.add(new LumberMillOutput((LumberMillModel) model));
-          } else if (model instanceof FarmModel) {
-              buildingOutputs.add(new FarmOutput((FarmModel) model));
-          } else if (model instanceof TowerModel) {
-              buildingOutputs.add(new TowerOutput((TowerModel) model));
-           }
+         buildingOutputs.add(BuildingOutputFactory.createOutput(model));
       }
       return buildingOutputs;
     }

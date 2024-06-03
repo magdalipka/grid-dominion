@@ -4,9 +4,12 @@ package com.example.griddominion.services;
 import java.util.HashMap;
 import java.util.UUID;
 
+import com.example.griddominion.models.db.ClanModel;
 import com.example.griddominion.utils.Constants;
 import com.example.griddominion.utils.Item;
 
+import com.example.griddominion.utils.UserJoinClanResponse;
+import com.example.griddominion.utils.errors.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +23,6 @@ import com.example.griddominion.repositories.InventoryRepository;
 import com.example.griddominion.repositories.SessionRepository;
 import com.example.griddominion.repositories.UserRepository;
 import com.example.griddominion.utils.PasswordHash;
-import com.example.griddominion.utils.errors.BadRequest;
-import com.example.griddominion.utils.errors.NotFound;
-import com.example.griddominion.utils.errors.ResourceConflict;
-import com.example.griddominion.utils.errors.Unauthorized;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -177,4 +176,20 @@ public class UserService {
     return user;
   }
 
+  public UserJoinClanResponse joinClan(UserModel user, ClanModel clan) {
+    if (clan.isPrivate()==false){
+      if (clan.getUsersList().size() < Constants.MAX_CLAN_MEMBERS){
+        clan.getUsersList().add(user);
+        user.setClan(clan);
+        return UserJoinClanResponse.JOINED;
+      }
+      else {
+        return UserJoinClanResponse.FULL;
+      }
+    }
+    else {
+      clan.getUsersToApprove().add(user);
+      return UserJoinClanResponse.SENT_INVITE;
+    }
+  }
 }

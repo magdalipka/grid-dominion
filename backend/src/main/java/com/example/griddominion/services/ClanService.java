@@ -153,4 +153,16 @@ public class ClanService {
         inventoryRepository.save(recive);
     }
 
+    public List<UserModel> getUsersInClan(String clanId) {
+        ClanModel clan = this.clanRepository.findById(clanId).orElse(null);
+        return clan.getUsersList();
+    }
+
+    public void addUserToClan(String clanId, UserModel user) {
+        ClanModel clan = this.clanRepository.findById(clanId).orElse(null);
+        clan.getUsersList().add(user);
+        clanRepository.save(clan);
+    }
+
+
 }

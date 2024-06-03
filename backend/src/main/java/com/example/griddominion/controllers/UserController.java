@@ -2,8 +2,13 @@ package com.example.griddominion.controllers;
 
 import com.example.griddominion.models.api.input.CoordinateInput;
 import com.example.griddominion.models.api.output.CoordinatesOutput;
+import com.example.griddominion.models.db.ClanModel;
 import com.example.griddominion.models.db.CoordinatesModel;
 import com.example.griddominion.models.db.UserModel;
+import com.example.griddominion.repositories.ClanRepository;
+import com.example.griddominion.utils.UserJoinClanResponse;
+import com.example.griddominion.utils.errors.NotFound;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.griddominion.models.api.input.UserCreationInput;
@@ -26,6 +31,8 @@ public class UserController {
 
   @Autowired()
   private UserService userService;
+  @Autowired()
+  private ClanRepository clanRepository;
 
   @PostMapping()
   public ResponseEntity<SessionOutput> registerUser(@RequestBody UserCreationInput userInput) {
@@ -67,18 +74,6 @@ public class UserController {
     return ResponseEntity.ok(new UserOutput(user));
   }
 
-
-
-
-/*
-  @PatchMapping()
-  public ResponseEntity<UserOutput> saveUserClan(@CookieValue("sid") String authToken, @RequestBody UserClanInput input) {
-    UserModel user = userService.getUserBySessionToken(authToken);
-    user.setClan(input.getClanId());
-    return ResponseEntity.ok(new UserOutput(user));
-  }
-*/
-
   @PostMapping("/coord")
   public ResponseEntity<UserOutput> saveUserCoordinates(@CookieValue("sid") String authToken, @RequestBody CoordinateInput input) {
     UserModel user = userService.getUserBySessionToken(authToken);
@@ -93,4 +88,36 @@ public class UserController {
     CoordinatesOutput coordinatesOutput = new CoordinatesOutput(coordinates.getX(), coordinates.getY());
     return ResponseEntity.ok(coordinatesOutput);
   }
+
+  @PatchMapping("/joinClan/{clan_id}")
+  public ResponseEntity<String> joinClan(@CookieValue("sid") String authToken, @PathVariable("clan_id") String clanId) {
+    UserModel user = userService.getUserBySessionToken(authToken);
+    ClanModel clan = clanRepository.findById(clanId).orElse(null);
+    if(clan==null) throw new NotFound("Clan not found");
+    UserJoinClanResponse response = userService.joinClan(user, clan);
+    HttpStatus httpStatus;
+    String message;
+    switch (response) {
+      case JOINED:
+        httpStatus = HttpStatus.OK;
+        message = "User joined clan successfully.";
+        break;
+      case SENT_INVITE:
+        httpStatus = HttpStatus.ACCEPTED;
+        message = "User sent an invite to join the clan.";
+        break;
+      case FULL:
+        httpStatus = HttpStatus.INSUFFICIENT_STORAGE;
+        message = "Clan is full. User could not join.";
+        break;
+      default:
+        httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        message = "Unknown error occurred.";
+    }
+    return ResponseEntity.status(httpStatus).body(message);
+  }
+
+
+
+
 }

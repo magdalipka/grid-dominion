@@ -48,4 +48,9 @@ public abstract class ResourceBuildingModel extends BuildingModel {
     level = 0;
     bonus = 0;
   }
+
+  @Override
+  public InventoryModel repair(InventoryModel inventoryModel) {
+      return inventoryModel;
+  }
 }

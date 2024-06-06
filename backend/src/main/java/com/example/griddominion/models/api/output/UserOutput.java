@@ -1,6 +1,5 @@
 package com.example.griddominion.models.api.output;
 
-import com.example.griddominion.models.db.InventoryModel;
 import com.example.griddominion.models.db.UserModel;
 
 public class UserOutput {

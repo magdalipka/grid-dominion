@@ -108,16 +108,20 @@ public class TerritoryService {
         for(TerritoryModel territory: territories){
             UserModel owner = territory.getOwner();
             if(owner!=null){
-                InventoryModel inventory =  inventoryRepository.findByUserId(owner);
-                HashMap<Item,Integer> items = inventory.getInventory();
-                int current = items.get(Item.FOOD);
-                items.put(Item.FOOD, Math.min(Constants.RESOURCE_LIMIT,current+territory.getFood()));
-                current = items.get(Item.WOOD);
-                items.put(Item.WOOD, Math.min(Constants.RESOURCE_LIMIT,current+territory.getWood()));
-                current = items.get(Item.GOLD);
-                items.put(Item.GOLD, Math.min(Constants.RESOURCE_LIMIT,current+territory.getGold()));
-                inventory.setInventory(items);
-                inventoryRepository.save(inventory);
+              List<BuildingModel> buildings =  territory.getBuildings();
+              GoldMineModel goldMine = (GoldMineModel)buildings.stream().filter(building -> building instanceof GoldMineModel).findFirst().orElseThrow(()->new NotFound("No gold mine"));
+              LumberMillModel lumberMill = (LumberMillModel)buildings.stream().filter(building -> building instanceof LumberMillModel).findFirst().orElseThrow(()->new NotFound("No lumber mill"));
+              FarmModel farm = (FarmModel)buildings.stream().filter(building -> building instanceof FarmModel).findFirst().orElseThrow(()->new NotFound("No farm"));
+              InventoryModel inventory =  inventoryRepository.findByUserId(owner);
+              HashMap<Item,Integer> items = inventory.getInventory();
+              int current = items.get(Item.FOOD);
+              items.put(Item.FOOD, (int) Math.min(Constants.RESOURCE_LIMIT,current+territory.getFood()*(farm.getBonus()+1)));
+              current = items.get(Item.WOOD);
+              items.put(Item.WOOD, (int) Math.min(Constants.RESOURCE_LIMIT,current+territory.getWood()*(lumberMill.getBonus()+1)));
+              current = items.get(Item.GOLD);
+              items.put(Item.GOLD, (int) Math.min(Constants.RESOURCE_LIMIT,current+territory.getGold()*(goldMine.getBonus()+1)));
+              inventory.setInventory(items);
+              inventoryRepository.save(inventory);
             }
         }
     }

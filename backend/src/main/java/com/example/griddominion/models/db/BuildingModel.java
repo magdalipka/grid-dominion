@@ -54,6 +54,7 @@ public abstract class BuildingModel {
   }
 
   public abstract InventoryModel upgrade(InventoryModel inventoryModel);
+  public abstract InventoryModel repair(InventoryModel inventoryModel);
 
   public abstract int getGoldCost();
 
@@ -62,5 +63,6 @@ public abstract class BuildingModel {
   public abstract int getFoodCost();
 
   public abstract void reset();
+
 
 }

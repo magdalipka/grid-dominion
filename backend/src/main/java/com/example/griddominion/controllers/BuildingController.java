@@ -21,4 +21,9 @@ public class BuildingController {
         BuildingOutput buildingOutput = buildingService.upgradeBuilding(input);
         return ResponseEntity.ok().headers(new Headers().addSid("")).body(buildingOutput);
     }
+    @PostMapping("/repair")
+    public ResponseEntity<BuildingOutput> repairBuilding(@RequestBody BuildingUpgradeInput input) {
+        BuildingOutput buildingOutput = buildingService.repairTower(input);
+        return ResponseEntity.ok().headers(new Headers().addSid("")).body(buildingOutput);
+    }
 }

@@ -69,6 +69,24 @@ public class TowerModel extends BuildingModel {
     }
 
     @Override
+    public InventoryModel repair(InventoryModel inventoryModel) {
+        HashMap<Item,Integer> resources = inventoryModel.getInventory();
+       int gold =  resources.get(Item.GOLD)-getGoldCostRepair();
+       int wood = resources.get(Item.WOOD)-getWoodCostRepair();
+       int food = resources.get(Item.FOOD)-getFoodCostRepair();
+
+       if(food < 0 || wood < 0 || gold < 0){
+           throw new BadRequest("Not enough resources");
+       }
+       resources.put(Item.GOLD, gold);
+       resources.put(Item.FOOD, food);
+       resources.put(Item.WOOD, wood);
+       inventoryModel.setInventory(resources);
+       healthCurrent = healthMax;
+       return inventoryModel;
+   }
+
+    @Override
     public int getGoldCost() {
         return (int)Math.pow(Constants.INITIAL_GOLD_COST_TOWER,Math.pow(Constants.UPGRADE_COST_TOWER_MULTIPLIER,level));
 
@@ -84,6 +102,25 @@ public class TowerModel extends BuildingModel {
     public int getFoodCost() {
         return (int)Math.pow(Constants.INITIAL_FOOD_COST_TOWER,Math.pow(Constants.UPGRADE_COST_TOWER_MULTIPLIER,level));
 
+    }
+
+    public int getGoldCostRepair() {
+        return (int)(Math.pow(Constants.INITIAL_GOLD_COST_TOWER,Math.pow(Constants.UPGRADE_COST_TOWER_MULTIPLIER,level-1))*getHealthMiss());
+
+    }
+
+    public int getWoodCostRepair() {
+        return (int)(Math.pow(Constants.INITIAL_WOOD_COST_TOWER,Math.pow(Constants.UPGRADE_COST_TOWER_MULTIPLIER,level-1))*getHealthMiss());
+
+    }
+
+    public int getFoodCostRepair() {
+        return (int)(Math.pow(Constants.INITIAL_FOOD_COST_TOWER,Math.pow(Constants.UPGRADE_COST_TOWER_MULTIPLIER,level-1))*getHealthMiss());
+
+    }
+
+    private double getHealthMiss(){
+        return 1.-(double)healthCurrent/(double)healthMax;
     }
 
     @Override

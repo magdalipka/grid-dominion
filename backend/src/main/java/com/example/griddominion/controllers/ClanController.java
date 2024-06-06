@@ -1,11 +1,7 @@
 package com.example.griddominion.controllers;
 
-import com.example.griddominion.models.api.output.UserOutput;
 import com.example.griddominion.models.api.output.UserOutputWithCoordinates;
-import com.example.griddominion.models.db.UserModel;
 import com.example.griddominion.services.UserService;
-import com.example.griddominion.utils.errors.Forbidden;
-import com.example.griddominion.utils.errors.NotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

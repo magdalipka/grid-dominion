@@ -6,15 +6,16 @@ import React from "react";
 
 import { useInventory } from "@/hooks/useInventory";
 import { useMyClan } from "@/hooks/useClan";
+import { useCurrentUser } from "@/hooks/useUser";
 
 export default function InventoryScreen() {
-  const { user } = useAuth();
+  const { data: user, isLoading: isUserLoading } = useCurrentUser();
 
-  const { data } = useMyClan();
+  const { data: clan, isLoading: isClanLoading } = useMyClan();
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>{JSON.stringify({ data })}</Text>
+      <Text>{JSON.stringify({ user, clan })}</Text>
     </SafeAreaView>
   );
 }

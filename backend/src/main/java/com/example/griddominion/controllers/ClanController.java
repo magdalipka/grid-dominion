@@ -57,35 +57,48 @@ public class ClanController {
   }
 
   @GetMapping("/{clan_id}/usersWithTheirCoordinates")
-  public ResponseEntity<List<UserOutputWithCoordinates>> getUsersWithTheirCoordinates(@PathVariable("clan_id") String clanId) {
+  public ResponseEntity<List<UserOutputWithCoordinates>> getUsersWithTheirCoordinates(
+      @PathVariable("clan_id") String clanId) {
     var users = clanService.getUsersInClan(clanId);
     List<UserOutputWithCoordinates> userOutputs = users.stream()
-            .map(UserOutputWithCoordinates::new)
-            .collect(Collectors.toList());
+        .map(UserOutputWithCoordinates::new)
+        .collect(Collectors.toList());
     return ResponseEntity.ok(userOutputs);
   }
 
-  @GetMapping("/{clan_id}/approveUser/{user_id}")
-  public ResponseEntity<?> approveUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String user_id, @CookieValue("sid") String authToken) {
+  @PostMapping("/{clan_id}/join")
+  public ResponseEntity<?> joinClan(@PathVariable("clan_id") String clanId,
+      @CookieValue("sid") String authToken) {
+    var user = userService.getUserBySessionToken(authToken);
+    var clan = clanService.getClanById(clanId);
+    if (clan.getUsersList().contains(user)) {
+      return ResponseEntity.badRequest().body("User is already in clan.");
+    }
+    if (clan.getUsersToApprove().contains(user) == false) {
+      return ResponseEntity.badRequest().body("User is not waiting for approval in this class.");
+    }
+    clanService.addUserToApprovalList(user, clan);
+    return ResponseEntity.ok().body("User was added to approval list.");
+  }
+
+  @PostMapping("/{clan_id}/approveUser/{user_id}")
+  public ResponseEntity<?> approveUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String user_id,
+      @CookieValue("sid") String authToken) {
     var requestingUser = userService.getUserBySessionToken(authToken);
     var clan = clanService.getClanById(clanId);
     var user = userService.getUserById(user_id);
     if (clan.getAdmin().getId().equals(requestingUser.getId()) == false) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admin can approve users to join the clan.");
     }
-    if(clan.getUsersList().contains(user)){
+    if (clan.getUsersList().contains(user)) {
       return ResponseEntity.badRequest().body("User is already in clan.");
     }
-    if(clan.getUsersToApprove().contains(user) == false){
+    if (clan.getUsersToApprove().contains(user) == false) {
       return ResponseEntity.badRequest().body("User is not waiting for approval in this class.");
     }
     clanService.addUserToClan(user, clan);
     clan.getUsersToApprove().remove(user);
     return ResponseEntity.ok().body("User was approved.");
   }
-
-
-
-
 
 }

@@ -158,11 +158,5 @@ public class ClanService {
         return clan.getUsersList();
     }
 
-    public void addUserToClan(String clanId, UserModel user) {
-        ClanModel clan = this.clanRepository.findById(clanId).orElse(null);
-        clan.getUsersList().add(user);
-        clanRepository.save(clan);
-    }
-
 
 }

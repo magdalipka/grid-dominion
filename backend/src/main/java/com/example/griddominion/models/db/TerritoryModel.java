@@ -48,6 +48,9 @@ public class TerritoryModel {
   @OneToMany(mappedBy = "territory", fetch = FetchType.LAZY)
   private List<BuildingModel> buildings;
 
+  @OneToMany(mappedBy = "territory", fetch = FetchType.LAZY)
+  private List<MinionModel> minions;
+
   public List<BuildingModel> getBuildings() {
     return buildings;
   }
@@ -126,6 +129,14 @@ public class TerritoryModel {
 
   public void setFood(int food) {
     this.food = food;
+  }
+
+  public List<MinionModel> getMinions() {
+    return minions;
+  }
+
+  public void setMinions(List<MinionModel> minions) {
+    this.minions = minions;
   }
 
   @Override

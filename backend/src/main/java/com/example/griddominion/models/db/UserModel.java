@@ -1,6 +1,7 @@
 package com.example.griddominion.models.db;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.example.griddominion.utils.Constants;
 import jakarta.persistence.*;
@@ -32,6 +33,9 @@ public class UserModel {
 
   @Column(name = "experience_to_level_up", nullable = true)
   private Integer experienceToLevelUp;
+
+  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<MinionModel> minions;
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private InventoryModel inventory;
@@ -120,6 +124,14 @@ public class UserModel {
 
   public void setExperienceToLevelUp(int experienceToLevelUp) {
     this.experienceToLevelUp = experienceToLevelUp;
+  }
+
+  public List<MinionModel> getMinions() {
+    return minions;
+  }
+
+  public void setMinions(List<MinionModel> minions) {
+    this.minions = minions;
   }
 
   public InventoryModel getInventory() {

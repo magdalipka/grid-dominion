@@ -27,8 +27,10 @@ public class ClanController {
   private UserService userService;
 
   @PostMapping()
-  public ResponseEntity<ClanOutput> createClan(@RequestBody ClanCreationInput input) {
-    var clan = clanService.createClan(input);
+  public ResponseEntity<ClanOutput> createClan(@RequestBody ClanCreationInput input,
+      @CookieValue("sid") String authToken) {
+    var user = userService.getUserBySessionToken(authToken);
+    var clan = clanService.createClan(input, user);
     var clanOutput = new ClanOutput(clan);
     return ResponseEntity.ok().headers(
         new Headers().addSid(clan.getId())).body(clanOutput);

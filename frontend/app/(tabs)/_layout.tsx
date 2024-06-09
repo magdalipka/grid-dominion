@@ -114,6 +114,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+        unmountOnBlur: true,
       }}
     >
       <Tabs.Screen
@@ -163,6 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
+    padding: 8,
     backgroundColor: COLORS.backgroundDark,
   },
 });

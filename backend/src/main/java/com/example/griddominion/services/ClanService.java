@@ -32,7 +32,7 @@ public class ClanService {
   @Autowired
   InventoryRepository inventoryRepository;
 
-  public ClanModel createClan(ClanCreationInput input) {
+  public ClanModel createClan(ClanCreationInput input, UserModel admin) {
 
     if (input.name == null) {
       throw new BadRequest("Clan name is not specified");
@@ -44,6 +44,7 @@ public class ClanService {
 
     ClanModel clan = new ClanModel();
     clan.setId(id);
+    clan.setAdminId(admin);
     clan.setName(input.name);
     if (input.isPrivate)
       clan.makePrivate();
@@ -52,14 +53,14 @@ public class ClanService {
     clan.setLevel(1);
     clan.setExperience(0);
     clan.setExperienceToLevelUp(Constants.BASE_CLAN_EXPERIENCE);
-    clan.initUsersList();
 
     try {
-      clanRepository.insert(clan.getId(), clan.getName(), clan.isPrivate(), clan.getLevel(), clan.getExperience(),
-          clan.getExperienceToLevelUp());
+      clanRepository.save(clan);
     } catch (DataIntegrityViolationException e) {
       throw new ResourceConflict("Clan with name " + input.name + " already exists");
     }
+    admin.setClan(clan);
+    userRepository.save(admin);
 
     return clan;
   }

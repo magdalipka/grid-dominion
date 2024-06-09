@@ -15,6 +15,9 @@ public class ClanModel {
   @Column(name = "name")
   private String name;
 
+  @Column(name = "admin_id")
+  private String adminId;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "admin_id", nullable = false, insertable = false, updatable = false)
   private UserModel admin;
@@ -102,10 +105,6 @@ public class ClanModel {
     this.experienceToLevelUp = experienceToLevelUp;
   }
 
-  public void initUsersList() {
-    this.users = new ArrayList<>();
-  }
-
   public List<UserModel> getUsersList() {
     return this.users;
   }
@@ -114,8 +113,8 @@ public class ClanModel {
     return admin;
   }
 
-  public void setAdmin(UserModel admin) {
-    this.admin = admin;
+  public void setAdminId(UserModel admin) {
+    this.adminId = admin.getId();
   }
 
   public List<UserModel> getUsersToApprove() {

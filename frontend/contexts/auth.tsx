@@ -4,22 +4,31 @@ import { request } from "@/lib/request";
 const AuthContext = React.createContext<{
   isLoading: boolean;
   user: { nick: string } | null;
-  login: (_: { nick: string; password: string }) => void;
+  login: (_: { nick: string; password: string }) => Promise<void>;
   register: (_: { nick: string; password: string }) => void;
+  credentials: { nick: string; password: string };
 }>({
   isLoading: true,
   user: null,
-  login: function (_: { nick: string; password: string }): void {
+  login: function (_: { nick: string; password: string }): Promise<void> {
     throw new Error("Function not implemented.");
   },
   register: function (_: { nick: string; password: string }): void {
     throw new Error("Function not implemented.");
+  },
+  credentials: {
+    nick: "",
+    password: "",
   },
 });
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [session, setSession] = React.useState<{ nick: string } | null>(null);
+  const [credentials, setCredentials] = React.useState<{
+    nick: string;
+    password: string;
+  }>({ nick: "", password: "" });
 
   const initSession = React.useCallback(async () => {
     try {
@@ -56,6 +65,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log({ res });
       }
       setIsLoading(false);
+      setCredentials({ nick, password });
     },
     []
   );
@@ -74,6 +84,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setSession(res);
         console.log({ res });
       }
+      setCredentials({ nick, password });
       setIsLoading(false);
     },
     []
@@ -84,7 +95,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoading, user: session, login, register }}>
+    <AuthContext.Provider
+      value={{ isLoading, user: session, login, register, credentials }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -181,14 +181,13 @@ public class UserService {
   }
 
   public UserJoinClanResponse joinClan(UserModel user, ClanModel clan) {
+    if (clan.getUsersList().size() >= Constants.MAX_CLAN_MEMBERS) {
+      return UserJoinClanResponse.FULL;
+    }
     if (clan.isPrivate() == false) {
-      if (clan.getUsersList().size() < Constants.MAX_CLAN_MEMBERS) {
-        clan.getUsersList().add(user);
-        user.setClan(clan);
-        return UserJoinClanResponse.JOINED;
-      } else {
-        return UserJoinClanResponse.FULL;
-      }
+      clan.getUsersList().add(user);
+      user.setClan(clan);
+      return UserJoinClanResponse.JOINED;
     } else {
       clan.getUsersToApprove().add(user);
       return UserJoinClanResponse.SENT_INVITE;

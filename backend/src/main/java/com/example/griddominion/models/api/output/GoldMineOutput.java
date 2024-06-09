@@ -3,7 +3,7 @@ package com.example.griddominion.models.api.output;
 import com.example.griddominion.models.db.GoldMineModel;
 
 public class GoldMineOutput extends BuildingOutput {
-    private double bonus;
+    public double bonus;
 
     public GoldMineOutput(long id, int level, int goldCost, int woodCost, int foodCost, double bonus){
         super(id,level,goldCost,woodCost,foodCost);

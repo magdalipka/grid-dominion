@@ -6,6 +6,7 @@ import com.example.griddominion.models.db.ClanModel;
 import com.example.griddominion.models.db.CoordinatesModel;
 import com.example.griddominion.models.db.UserModel;
 import com.example.griddominion.repositories.ClanRepository;
+import com.example.griddominion.services.ClanService;
 import com.example.griddominion.utils.UserJoinClanResponse;
 import com.example.griddominion.utils.errors.NotFound;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,8 @@ public class UserController {
 
   @Autowired()
   private UserService userService;
+  @Autowired()
+  private ClanService clanService;
   @Autowired()
   private ClanRepository clanRepository;
 
@@ -117,7 +120,14 @@ public class UserController {
     return ResponseEntity.status(httpStatus).body(message);
   }
 
-
+  @PostMapping("/leaveClan")
+  public ResponseEntity<String> leaveClan(@CookieValue("sid") String authToken) {
+    UserModel user = userService.getUserBySessionToken(authToken);
+    ClanModel clan = user.getClan();
+    if(clan==null) throw new NotFound("User is not in any clan");
+    clanService.removeUser(user, clan);
+    return ResponseEntity.ok("User leaved the clan");
+  }
 
 
 }

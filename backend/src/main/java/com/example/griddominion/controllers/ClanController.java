@@ -2,6 +2,7 @@ package com.example.griddominion.controllers;
 
 import com.example.griddominion.models.api.output.UserOutputWithCoordinates;
 import com.example.griddominion.services.UserService;
+import com.example.griddominion.utils.errors.Unauthorized;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,24 +86,76 @@ public class ClanController {
     return ResponseEntity.ok().body("User was added to approval list.");
   }
 
-  @PostMapping("/{clan_id}/approveUser/{user_id}")
+  @GetMapping("/{clan_id}/approveUser/{user_id}")
   public ResponseEntity<?> approveUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String user_id,
       @CookieValue("sid") String authToken) {
-    var requestingUser = userService.getUserBySessionToken(authToken);
-    var clan = clanService.getClanById(clanId);
-    var user = userService.getUserById(user_id);
-    if (clan.getAdmin().getId().equals(requestingUser.getId()) == false) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admin can approve users to join the clan.");
+    try {
+      var requestingUser = userService.getUserBySessionToken(authToken);
+      var clan = clanService.getClanById(clanId);
+      var user = userService.getUserById(user_id);
+      if (clan.getAdmin().getId().equals(requestingUser.getId()) == false) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admin can approve users to join the clan.");
+      }
+      if (clan.getUsersList().contains(user)) {
+        return ResponseEntity.badRequest().body("User is already in clan.");
+      }
+      if (clan.getUsersToApprove().contains(user) == false) {
+        return ResponseEntity.badRequest().body("User is not waiting for approval in this class.");
+      }
+      clanService.addUserToClan(user, clan);
+      clan.getUsersToApprove().remove(user);
+      return ResponseEntity.ok().body("User was approved.");
+    } catch (Unauthorized e) {
+      return ResponseEntity.badRequest().body("Session not found");
     }
-    if (clan.getUsersList().contains(user)) {
-      return ResponseEntity.badRequest().body("User is already in clan.");
+  }
+
+  @GetMapping("/{clan_id}/rejectUser/{user_id}")
+  public ResponseEntity<?> rejectUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String userId,
+      @CookieValue("sid") String authToken) {
+    try {
+      var requestingUser = userService.getUserBySessionToken(authToken);
+      var clan = clanService.getClanById(clanId);
+      var user = userService.getUserById(userId);
+
+      if (!clan.getAdmin().getId().equals(requestingUser.getId())) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admin can reject users from joining the clan.");
+      }
+      if (!clan.getUsersToApprove().contains(user)) {
+        return ResponseEntity.badRequest().body("User is not waiting for approval in this clan.");
+      }
+      if (clan.getUsersList().contains(user)) {
+        return ResponseEntity.badRequest().body("User is a member of this clan, not in waiting list. If you wanted to" +
+            " remove user from clan, use /{clan_id}/removeUser/{user_id}");
+      }
+      clan.getUsersToApprove().remove(user);
+      return ResponseEntity.ok().body("User was rejected.");
+    } catch (Unauthorized e) {
+      return ResponseEntity.badRequest().body("Session not found");
     }
-    if (clan.getUsersToApprove().contains(user) == false) {
-      return ResponseEntity.badRequest().body("User is not waiting for approval in this class.");
+  }
+
+  @GetMapping("/{clan_id}/removeUser/{user_id}")
+  public ResponseEntity<?> removeUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String userId,
+      @CookieValue("sid") String authToken) {
+    try {
+      var requestingUser = userService.getUserBySessionToken(authToken);
+      var clan = clanService.getClanById(clanId);
+      var user = userService.getUserById(userId);
+
+      if (!clan.getAdmin().getId().equals(requestingUser.getId())) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admin can remove users from the clan.");
+      }
+
+      if (!clan.getUsersList().contains(user)) {
+        return ResponseEntity.badRequest().body("User is not a member of the clan.");
+      }
+
+      clanService.removeUser(user, clan);
+      return ResponseEntity.ok().body("User was removed from the clan.");
+    } catch (Unauthorized e) {
+      return ResponseEntity.badRequest().body("Session not found");
     }
-    clanService.addUserToClan(user, clan);
-    clan.getUsersToApprove().remove(user);
-    return ResponseEntity.ok().body("User was approved.");
   }
 
 }

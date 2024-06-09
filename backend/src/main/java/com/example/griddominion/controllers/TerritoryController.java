@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.griddominion.models.api.input.TerritoryIdInput;
 import com.example.griddominion.models.api.input.TerritoryOwnerInput;
 import com.example.griddominion.models.api.output.BuildingOutput;
+import com.example.griddominion.models.api.output.FightOutput;
 import com.example.griddominion.models.api.output.TerritoryOutput;
 import com.example.griddominion.models.api.output.TerritoryOwnerOutput;
 import com.example.griddominion.services.TerritoryService;
@@ -34,9 +35,9 @@ public class TerritoryController {
     }
 
     @PostMapping("/owner")
-    public ResponseEntity<Void> updateOwner(@RequestBody TerritoryOwnerInput input) {
-        territoryService.upddateOwner(input);
-        return ResponseEntity.ok().headers(new Headers().addSid("")).build();
+    public ResponseEntity<FightOutput> updateOwner(@RequestBody TerritoryOwnerInput input) {
+        FightOutput opt  = territoryService.upddateOwner(input);
+        return ResponseEntity.ok().headers(new Headers().addSid("")).body(opt);
     }
     
     @PostMapping("/buildings")

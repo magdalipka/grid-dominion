@@ -84,7 +84,7 @@ export const useApproveMember = (clanId?: string) => {
   return useMutation({
     mutationFn: async ({ userId }: { userId: string }) => {
       const res = await (
-        await request("/clans/" + clanId + "/" + userId, {
+        await request("/clans/" + clanId + "/approveUser/" + userId, {
           method: "POST",
           headers: {
             "content-type": "application/json",

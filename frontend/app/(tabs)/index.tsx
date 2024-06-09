@@ -44,6 +44,7 @@ export default function HomeScreen() {
     longitude: number;
     latitude: number;
   } | null>(null);
+  const [focusCenter, setFocusCenter] = useState();
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -105,6 +106,7 @@ export default function HomeScreen() {
         showsUserLocation
         followsUserLocation
         minZoomLevel={13}
+        // onRegionChangeComplete={}
       >
         {territories.map((t) => (
           <Polygon

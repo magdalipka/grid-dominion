@@ -1,4 +1,13 @@
-import { Image, StyleSheet, View, Text, Button, TextInput } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  TextInput,
+  Pressable,
+  Clipboard,
+} from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useCallback, useRef, useState } from "react";
@@ -20,7 +29,7 @@ import { COLORS } from "@/lib/colors";
 import { SendResources } from "./SendResources";
 
 export const ClanView = () => {
-  const { data: user, isLoading: isUserLoading } = useCurrentUser();
+  const { data: currentUser, isLoading: isUserLoading } = useCurrentUser();
   const { data: clan, isLoading: isClanLoading } = useMyClan();
 
   const [selectedUser, setSelectedUser] = useState<{ id: string; nick: string }>();
@@ -44,31 +53,46 @@ export const ClanView = () => {
   return (
     <View style={styles.container}>
       <View style={styles.clan}>
-        <Text>{clan.name}</Text>
-        <Text>Members:</Text>
+        <Text style={{ fontSize: 24, fontWeight: 700 }}>{clan.name}</Text>
+        <Pressable
+          onPress={() => {
+            Clipboard.setString(clan.id);
+          }}
+        >
+          <Text>{clan.id}</Text>
+        </Pressable>
+        <Text style={{ fontSize: 18 }}>Members:</Text>
         {clan.users.map((user) => (
-          <View key={user.id}>
+          <View key={user.id} style={styles.user}>
             <Text>{user.nick}</Text>
-            <Button
-              title="send resources"
-              onPress={() => handlePresentModalPress(user)}
-            />
+            {user.id !== currentUser?.id ? (
+              <Button
+                title="send resources"
+                onPress={() => handlePresentModalPress(user)}
+              />
+            ) : (
+              <></>
+            )}
           </View>
         ))}
-        {clan.adminId === user?.id && (
-          <View>
-            <Text>User to approve</Text>
-            {clan.users.map((user) => (
-              <View key={user.id} style={styles.user}>
-                <Text>{user.nick}</Text>
-                <Button
-                  title="accept"
-                  onPress={() => {
-                    approveUser({ userId: user.id });
-                  }}
-                />
-              </View>
-            ))}
+        {clan.adminId === currentUser?.id && (
+          <View style={{ gap: 8 }}>
+            <Text style={{ fontSize: 18 }}>User to approve</Text>
+            {clan.usersToApprove.length ? (
+              clan.usersToApprove.map((user) => (
+                <View key={user.id} style={styles.user}>
+                  <Text>{user.nick}</Text>
+                  <Button
+                    title="accept"
+                    onPress={() => {
+                      approveUser({ userId: user.id });
+                    }}
+                  />
+                </View>
+              ))
+            ) : (
+              <Text>Noone here, send clan id to your friends so they can join.</Text>
+            )}
           </View>
         )}
       </View>
@@ -109,7 +133,11 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: COLORS.backgroundDark,
   },
-  user: {},
+  user: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
 });
 
 const bottomSheetStyles = StyleSheet.create({

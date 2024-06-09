@@ -18,6 +18,7 @@ import com.example.griddominion.utils.errors.*;
 
 import jakarta.transaction.Transactional;
 
+import org.checkerframework.checker.units.qual.m;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,6 +99,9 @@ public class ClanService {
     if (clan.getUsersList().size() < Constants.MAX_CLAN_MEMBERS) {
       clan.getUsersList().add(user);
       user.setClan(clan);
+      clan.getUsersToApprove().remove(user);
+      clanRepository.save(clan);
+      userRepository.save(user);
     } else {
       throw new InsufficientStorage("Clan is full!");
     }
@@ -117,8 +121,7 @@ public class ClanService {
   }
 
   @Transactional
-  public void sendResources(ResourcesTransferInput resourcesTransferInput) {
-    UserModel sender = userRepository.findByNick(resourcesTransferInput.senderNick);
+  public void sendResources(UserModel sender, ResourcesTransferInput resourcesTransferInput) {
     UserModel reciver = userRepository.findByNick(resourcesTransferInput.reciverNick);
     if (sender == null || reciver == null) {
       throw new Unauthorized("User not found");

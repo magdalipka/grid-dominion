@@ -53,8 +53,10 @@ public class ClanController {
   }
 
   @PostMapping("/sendResources")
-  public ResponseEntity<?> sendResources(@RequestBody ResourcesTransferInput resourcesTransferInput) {
-    clanService.sendResources(resourcesTransferInput);
+  public ResponseEntity<?> sendResources(@RequestBody ResourcesTransferInput resourcesTransferInput,
+      @CookieValue("sid") String authToken) {
+    var user = userService.getUserBySessionToken(authToken);
+    clanService.sendResources(user, resourcesTransferInput);
     return ResponseEntity.ok().body("Resources transferred successfully.");
   }
 

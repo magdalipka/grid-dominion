@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.griddominion.models.api.input.BuildingUpgradeInput;
 import com.example.griddominion.models.api.output.BuildingOutput;
+import com.example.griddominion.models.api.output.MinionOutput;
 import com.example.griddominion.services.BuildingService;
 import com.example.griddominion.utils.Headers;
 
@@ -25,5 +26,11 @@ public class BuildingController {
     public ResponseEntity<BuildingOutput> repairBuilding(@RequestBody BuildingUpgradeInput input) {
         BuildingOutput buildingOutput = buildingService.repairTower(input);
         return ResponseEntity.ok().headers(new Headers().addSid("")).body(buildingOutput);
+    }
+
+    @PostMapping("/tower/minion")
+    public ResponseEntity<MinionOutput> creteMinion(@RequestBody BuildingUpgradeInput input) {
+        MinionOutput minionOutput = buildingService.createMinionInTower(input);
+        return ResponseEntity.ok().headers(new Headers().addSid("")).body(minionOutput);
     }
 }

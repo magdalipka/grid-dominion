@@ -50,6 +50,10 @@ public final class Constants {
 
     public static final int BASE_ATTACK_TOWER = 50;
     public static final int BASE_HP_MAX_TOWER = 250;
+
+    public static final int MINION_GOLD_COST = 1000;
+    public static final int MINION_WOOD_COST = 400;
+    public static final int MINION_FOOD_COST = 2000;
     private Constants() {
         // Prevent instantiation
     }

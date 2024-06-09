@@ -8,9 +8,6 @@ public class MinionModel {
     @Id
     private String id;
 
-    @Column(name = "coordinates")
-    private CoordinatesModel coordinates;
-
     @Column(name = "level", nullable = true)
     private Integer level;
 
@@ -52,14 +49,6 @@ public class MinionModel {
         this.id = id;
     }
 
-    public CoordinatesModel getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(CoordinatesModel coordinates) {
-        this.coordinates = coordinates;
-    }
-
     public int getLevel() {
         return level;
     }
@@ -70,6 +59,9 @@ public class MinionModel {
 
     public int getExperience() {
         return experience;
+    }
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
 
     public int getExperienceToLevelUp() {
@@ -130,7 +122,7 @@ public class MinionModel {
 
     @Override
     public String toString() {
-        return "MinionModel [id=" + id + ", coordinates=" + coordinates + ", level=" + level + ", experience=" + experience
+        return "MinionModel [id=" + id  + ", level=" + level + ", experience=" + experience
                 + ", experienceToLevelUp=" + experienceToLevelUp + ", movementSpeed=" + movementSpeed + ", attackDamage=" + attackDamage
                 + ", attackSpeed=" + attackSpeed + ", hp=" + hp + ", owner=" + owner + "]";
     }

@@ -56,26 +56,20 @@ export const useCreateClan = () => {
 };
 
 export const useJoinClan = () => {
-  const client = useQueryClient();
+  console.log("here");
   return useMutation({
     mutationFn: async ({ clanId }: { clanId: string }) => {
       const res = await (
-        await request("/clans/" + clanId, {
+        await request("/clans/" + clanId + "/join", {
           method: "POST",
           headers: {
             "content-type": "application/json",
           },
         })
-      ).json();
+      ).text();
       console.log({ res });
       return res;
     },
-    onMutate: () =>
-      setTimeout(() => {
-        client.invalidateQueries({ queryKey: ["myClan"] });
-        client.refetchQueries({ queryKey: ["myClan"] });
-        client.refetchQueries({ queryKey: ["currentUser"] });
-      }, 1000),
   });
 };
 

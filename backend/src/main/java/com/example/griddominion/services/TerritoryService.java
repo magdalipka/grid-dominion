@@ -14,6 +14,7 @@ import com.example.griddominion.factories.BuildingOutputFactory;
 import com.example.griddominion.models.api.input.TerritoryIdInput;
 import com.example.griddominion.models.api.input.TerritoryOwnerInput;
 import com.example.griddominion.models.api.output.BuildingOutput;
+import com.example.griddominion.models.api.output.FightOutput;
 import com.example.griddominion.models.api.output.TerritoryOutput;
 import com.example.griddominion.models.api.output.TerritoryOwnerOutput;
 import com.example.griddominion.models.db.TerritoryModel;
@@ -24,8 +25,10 @@ import com.example.griddominion.models.db.FarmModel;
 import com.example.griddominion.models.db.GoldMineModel;
 import com.example.griddominion.models.db.InventoryModel;
 import com.example.griddominion.models.db.LumberMillModel;
+import com.example.griddominion.models.db.MinionModel;
 import com.example.griddominion.repositories.BuildingRepository;
 import com.example.griddominion.repositories.InventoryRepository;
+import com.example.griddominion.repositories.MinionRepository;
 import com.example.griddominion.repositories.TerritoryRepository;
 import com.example.griddominion.repositories.UserRepository;
 import com.example.griddominion.utils.Constants;
@@ -45,11 +48,11 @@ public class TerritoryService {
   InventoryRepository inventoryRepository;
   @Autowired
   BuildingRepository buildingRepository;
-
+  @Autowired
+  MinionRepository minionRepository;
   @PostConstruct
   public void initTerritories() {
     if (territoryRepository.findAll().isEmpty()) {
-
       // https://krakow.stat.gov.pl/cps/rde/xbcr/krak/ASSETS_07m01_01.pdf
       double north_most = 50.117;
       double south_most = 49.966;
@@ -138,6 +141,27 @@ public class TerritoryService {
         inventoryRepository.save(inventory);
       }
     }
+
+    public FightOutput upddateOwner(TerritoryOwnerInput territoryOwnerInput){
+        UserModel user = userRepository.findById(territoryOwnerInput.userId).get();
+        TerritoryModel territory = territoryRepository.findById(territoryOwnerInput.Id).get();
+        if(user == null || territory ==  null) throw new NotFound("There is no such user or territory");
+        TowerModel tower = (TowerModel) territory.getBuildings().stream()
+                .filter(building -> building instanceof TowerModel).findFirst()
+                .orElseThrow(() -> new NotFound("Tower not found"));
+        List<MinionModel> attackers =  user.getMinions();
+        List<MinionModel> defenders = territory.getMinions();
+        FightOutput opt = fight(attackers, defenders, tower);
+        if(opt.win){
+          territory.setOwner(user);
+          for(BuildingModel building : territory.getBuildings()){
+            building.reset();
+            buildingRepository.save(building);
+          }
+          territoryRepository.save(territory);
+        }
+        return opt;
+      
   }
 
   public List<TerritoryOutput> getAllTerritories() {
@@ -154,12 +178,14 @@ public class TerritoryService {
         .collect(Collectors.toList());
   }
 
-  public void upddateOwner(TerritoryOwnerInput territoryOwnerInput) {
+  /*
+    public void upddateOwner(TerritoryOwnerInput territoryOwnerInput) {
     UserModel user = userRepository.findById(territoryOwnerInput.userId).get();
     TerritoryModel territory = territoryRepository.findById(territoryOwnerInput.Id).get();
     territory.setOwner(user);
     territoryRepository.save(territory);
   }
+  */
 
   public List<BuildingOutput> getTerritoryBuildings(TerritoryIdInput territoryIdInput) {
     TerritoryModel territoryModel = territoryRepository.findById(territoryIdInput.id).orElse(null);
@@ -171,6 +197,68 @@ public class TerritoryService {
     for (BuildingModel model : buildingModels) {
       buildingOutputs.add(BuildingOutputFactory.createOutput(model));
     }
+
+    private FightOutput fight(List<MinionModel> atackers, List<MinionModel> defenders, TowerModel tower){
+      while (!atackers.isEmpty() && !defenders.isEmpty()) {
+
+        
+        MinionModel defender = defenders.isEmpty() ? null : defenders.get(0);
+        for(MinionModel atackerATK : atackers){
+          defender.setHp(defender.getHp() - atackerATK.getAttackDamage());
+          if(defender.getHp() <= 0){
+            minionRepository.delete(defender);
+            defenders.remove(defender);
+            defender = defenders.isEmpty() ? null : defenders.get(0);
+            if(defender == null) break;
+          }
+        }
+
+
+        MinionModel atacker = atackers.isEmpty() ? null : atackers.get(0);
+        for(MinionModel defenderATK : defenders){
+          atacker.setHp(atacker.getHp() - defenderATK.getAttackDamage());
+          if(atacker.getHp() <= 0){
+            minionRepository.delete(atacker);
+            atackers.remove(atacker);
+            atacker = atackers.isEmpty() ? null : atackers.get(0);
+            if(atacker == null) {
+              minionRepository.save(defender);
+              buildingRepository.save(tower);
+              return new FightOutput(false, defenders, tower);
+            }
+          }
+        }
+
+
+        atacker.setHp(atacker.getHp() - tower.getAttack());
+        if(atacker.getHp() <= 0){
+          minionRepository.delete(atacker);
+          atackers.remove(atacker);
+        }
+        
+      }
+
+      while (!atackers.isEmpty() && tower.getHealthCurrent() > 0) {
+        for(MinionModel atackerATK : atackers){
+          tower.setHealthCurrent(tower.getHealthCurrent() - (int)atackerATK.getAttackDamage());
+          if(tower.getHealth() <= 0) return new FightOutput(true,atackers,null);
+        }
+        MinionModel atacker = atackers.isEmpty() ? null : atackers.get(0);
+        atacker.setHp(atacker.getHp() - tower.getAttack());
+        if(atacker.getHp() <= 0){
+          minionRepository.delete(atacker);
+          atackers.remove(atacker);
+        }
+      }
+
+      if(tower.getHealthCurrent() > 0) {
+        buildingRepository.save(tower);
+        return new FightOutput(false, defenders, tower);
+      }
+      minionRepository.save(atackers.get(0));
+      return new FightOutput(true,atackers,null);
+    }
+
     return buildingOutputs;
   }
 }

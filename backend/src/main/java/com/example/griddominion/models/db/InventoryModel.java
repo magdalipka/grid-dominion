@@ -16,7 +16,7 @@ public class InventoryModel {
   @Column(name = "inventoryHashMap")
   private HashMap<Item, Integer> inventoryHashMap;
 
-  @OneToMany(mappedBy = "inventory_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<MinionModel> minions;
 
   @OneToOne(fetch = FetchType.LAZY)
@@ -45,6 +45,7 @@ public class InventoryModel {
   public Long getId() {
     return this.id;
   }
+
   public List<MinionModel> getMinions() {
     return minions;
   }

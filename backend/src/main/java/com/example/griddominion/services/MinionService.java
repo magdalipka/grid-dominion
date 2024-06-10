@@ -25,7 +25,7 @@ public class MinionService {
     @Autowired
     private UserService userService;
 
-    public void moveMinionToTerritory(String minionId, String territoryId, String callerSid) {
+    public void moveMinionToTerritory(String minionId, Integer territoryId, String callerSid) {
         MinionModel minion = minionRepository.findById(minionId).orElseThrow(() -> new NotFound("Minion not found"));
 
         // Check if caller is minion's owner

@@ -27,9 +27,9 @@ public abstract class ResourceBuildingModel extends BuildingModel {
   @Override
   public InventoryModel upgrade(InventoryModel inventoryModel) {
     HashMap<Item, Integer> resources = inventoryModel.getInventory();
-    int gold = resources.get(Item.GOLD) - getGoldCost();
-    int wood = resources.get(Item.WOOD) - getWoodCost();
-    int food = resources.get(Item.FOOD) - getFoodCost();
+    Integer gold = resources.get(Item.GOLD) - getGoldCost();
+    Integer wood = resources.get(Item.WOOD) - getWoodCost();
+    Integer food = resources.get(Item.FOOD) - getFoodCost();
 
     if (food < 0 || wood < 0 || gold < 0) {
       throw new BadRequest("Not enough resources");
@@ -51,6 +51,6 @@ public abstract class ResourceBuildingModel extends BuildingModel {
 
   @Override
   public InventoryModel repair(InventoryModel inventoryModel) {
-      return inventoryModel;
+    return inventoryModel;
   }
 }

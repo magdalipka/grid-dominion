@@ -1,6 +1,5 @@
 package com.example.griddominion.services;
 
-
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -25,7 +24,6 @@ import com.example.griddominion.repositories.UserRepository;
 import com.example.griddominion.utils.PasswordHash;
 
 import org.springframework.dao.DataIntegrityViolationException;
-
 
 @Service
 public class UserService {
@@ -62,19 +60,19 @@ public class UserService {
     user.setCreatedAt();
 
     try {
-      userRepository.insert(user.getId(), user.getHashedPassword(), user.getCreatedAt(), user.getNick(), user.getLevel(), user.getExperience(), user.getExperienceToLevelUp());
+      userRepository.insert(user.getId(), user.getHashedPassword(), user.getCreatedAt(), user.getNick(),
+          user.getLevel(), user.getExperience(), user.getExperienceToLevelUp());
       InventoryModel inventory = new InventoryModel();
       inventory.setUser(user);
-      HashMap<Item, Integer> inventoryHashMap =  new HashMap<>();
-      inventoryHashMap.put(Item.GOLD,1000);
-      inventoryHashMap.put(Item.FOOD,1000);
-      inventoryHashMap.put(Item.WOOD,1000);
+      HashMap<Item, Integer> inventoryHashMap = new HashMap<>();
+      inventoryHashMap.put(Item.GOLD, 1000);
+      inventoryHashMap.put(Item.FOOD, 1000);
+      inventoryHashMap.put(Item.WOOD, 1000);
       inventory.setInventory(inventoryHashMap);
       inventoryRepository.save(inventory);
     } catch (DataIntegrityViolationException e) {
       throw new ResourceConflict("User with nick " + input.nick + " already exists");
     }
-
 
     return user;
   }
@@ -142,6 +140,8 @@ public class UserService {
 
   public UserModel getUserBySessionToken(String sessionId) {
 
+    this.logger.error("sessionId: " + sessionId);
+
     if ("".equals(sessionId)) {
       throw new Unauthorized("Not logged in");
     }
@@ -152,12 +152,16 @@ public class UserService {
       throw new Unauthorized("Session not found");
     }
 
+    this.logger.error("session: " + session);
+
     if (session.isExpired()) {
       this.sessionRepository.delete(session);
       throw new Unauthorized("Session expired");
     }
 
     UserModel user = this.userRepository.findById(session.getUserId()).orElse(null);
+
+    this.logger.error("user: " + user);
 
     if (user == null) {
       throw new Unauthorized("User not found");
@@ -184,8 +188,7 @@ public class UserService {
       clan.getUsersList().add(user);
       user.setClan(clan);
       return UserJoinClanResponse.JOINED;
-    }
-    else {
+    } else {
       clan.getUsersToApprove().add(user);
       return UserJoinClanResponse.SENT_INVITE;
     }

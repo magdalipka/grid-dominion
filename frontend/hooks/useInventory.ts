@@ -3,13 +3,19 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useInventory = () =>
   useQuery({
-    queryKey: ["inventory"],
+    queryKey: ["myInventory"],
     queryFn: async () => {
       const res = await (
         await request("/inventories", {
           method: "GET",
         })
       ).json();
-      return res.inventoryHashMap as { WOOD: number; FOOD: number; GOLD: number };
+      console.log({ res });
+      return res.inventoryHashMap as {
+        WOOD: number;
+        FOOD: number;
+        GOLD: number;
+        MINION: number;
+      };
     },
   });

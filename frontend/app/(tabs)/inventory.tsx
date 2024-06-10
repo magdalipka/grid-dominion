@@ -5,6 +5,7 @@ import React from "react";
 import GoldIcon from "@/assets/icons/gold.svg";
 import WoodIcon from "@/assets/icons/wood.svg";
 import FoodIcon from "@/assets/icons/food.svg";
+import MeepleIcon from "@/assets/icons/meeple.svg";
 import { useInventory } from "@/hooks/useInventory";
 
 const ICON_SIZE = 24;
@@ -34,6 +35,10 @@ export default function InventoryScreen() {
         <View style={styles.resource}>
           <FoodIcon width={ICON_SIZE} height={ICON_SIZE} />
           <Text style={styles.resourceText}>{inventory?.FOOD || 0}</Text>
+        </View>
+        <View style={styles.resource}>
+          <MeepleIcon width={ICON_SIZE} height={ICON_SIZE} />
+          <Text style={styles.resourceText}>{inventory?.MINION || 0}</Text>
         </View>
       </View>
     </SafeAreaView>

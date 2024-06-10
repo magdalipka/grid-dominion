@@ -28,8 +28,10 @@ public class ClanController {
   private UserService userService;
 
   @PostMapping()
-  public ResponseEntity<ClanOutput> createClan(@RequestBody ClanCreationInput input) {
-    var clan = clanService.createClan(input);
+  public ResponseEntity<ClanOutput> createClan(@RequestBody ClanCreationInput input,
+      @CookieValue("sid") String authToken) {
+    var user = userService.getUserBySessionToken(authToken);
+    var clan = clanService.createClan(input, user);
     var clanOutput = new ClanOutput(clan);
     return ResponseEntity.ok().headers(
         new Headers().addSid(clan.getId())).body(clanOutput);
@@ -52,22 +54,41 @@ public class ClanController {
   }
 
   @PostMapping("/sendResources")
-  public ResponseEntity<?> sendResources(@RequestBody ResourcesTransferInput resourcesTransferInput) {
-    clanService.sendResources(resourcesTransferInput);
+  public ResponseEntity<?> sendResources(@RequestBody ResourcesTransferInput resourcesTransferInput,
+      @CookieValue("sid") String authToken) {
+    var user = userService.getUserBySessionToken(authToken);
+    clanService.sendResources(user, resourcesTransferInput);
     return ResponseEntity.ok().body("Resources transferred successfully.");
   }
 
   @GetMapping("/{clan_id}/usersWithTheirCoordinates")
-  public ResponseEntity<List<UserOutputWithCoordinates>> getUsersWithTheirCoordinates(@PathVariable("clan_id") String clanId) {
+  public ResponseEntity<List<UserOutputWithCoordinates>> getUsersWithTheirCoordinates(
+      @PathVariable("clan_id") String clanId) {
     var users = clanService.getUsersInClan(clanId);
     List<UserOutputWithCoordinates> userOutputs = users.stream()
-            .map(UserOutputWithCoordinates::new)
-            .collect(Collectors.toList());
+        .map(UserOutputWithCoordinates::new)
+        .collect(Collectors.toList());
     return ResponseEntity.ok(userOutputs);
   }
 
+  @PostMapping("/{clan_id}/join")
+  public ResponseEntity<?> joinClan(@PathVariable("clan_id") String clanId,
+      @CookieValue("sid") String authToken) {
+    var user = userService.getUserBySessionToken(authToken);
+    var clan = clanService.getClanById(clanId);
+    if (clan.getUsersList().contains(user)) {
+      return ResponseEntity.badRequest().body("User is already in clan.");
+    }
+    if (clan.getUsersToApprove().contains(user) == false) {
+      return ResponseEntity.badRequest().body("User is not waiting for approval in this class.");
+    }
+    clanService.addUserToApprovalList(user, clan);
+    return ResponseEntity.ok().body("User was added to approval list.");
+  }
+
   @GetMapping("/{clan_id}/approveUser/{user_id}")
-  public ResponseEntity<?> approveUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String user_id, @CookieValue("sid") String authToken) {
+  public ResponseEntity<?> approveUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String user_id,
+      @CookieValue("sid") String authToken) {
     try {
       var requestingUser = userService.getUserBySessionToken(authToken);
       var clan = clanService.getClanById(clanId);
@@ -84,14 +105,14 @@ public class ClanController {
       clanService.addUserToClan(user, clan);
       clan.getUsersToApprove().remove(user);
       return ResponseEntity.ok().body("User was approved.");
-    }
-    catch (Unauthorized e){
+    } catch (Unauthorized e) {
       return ResponseEntity.badRequest().body("Session not found");
     }
   }
 
   @GetMapping("/{clan_id}/rejectUser/{user_id}")
-  public ResponseEntity<?> rejectUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String userId, @CookieValue("sid") String authToken) {
+  public ResponseEntity<?> rejectUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String userId,
+      @CookieValue("sid") String authToken) {
     try {
       var requestingUser = userService.getUserBySessionToken(authToken);
       var clan = clanService.getClanById(clanId);
@@ -105,7 +126,7 @@ public class ClanController {
       }
       if (clan.getUsersList().contains(user)) {
         return ResponseEntity.badRequest().body("User is a member of this clan, not in waiting list. If you wanted to" +
-                " remove user from clan, use /{clan_id}/removeUser/{user_id}");
+            " remove user from clan, use /{clan_id}/removeUser/{user_id}");
       }
       clan.getUsersToApprove().remove(user);
       return ResponseEntity.ok().body("User was rejected.");
@@ -115,7 +136,8 @@ public class ClanController {
   }
 
   @GetMapping("/{clan_id}/removeUser/{user_id}")
-  public ResponseEntity<?> removeUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String userId, @CookieValue("sid") String authToken) {
+  public ResponseEntity<?> removeUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String userId,
+      @CookieValue("sid") String authToken) {
     try {
       var requestingUser = userService.getUserBySessionToken(authToken);
       var clan = clanService.getClanById(clanId);
@@ -135,9 +157,5 @@ public class ClanController {
       return ResponseEntity.badRequest().body("Session not found");
     }
   }
-
-
-
-
 
 }

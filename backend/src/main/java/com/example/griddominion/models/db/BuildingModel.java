@@ -22,8 +22,11 @@ public abstract class BuildingModel {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   protected Long id;
 
-  @Column(name = "level", nullable = true)
+  @Column(name = "level", nullable = false)
   protected Integer level;
+
+  @Column(name = "territory_id")
+  private Integer territoryId;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "territory_id", nullable = false, insertable = false, updatable = false)
@@ -37,11 +40,11 @@ public abstract class BuildingModel {
     this.id = id;
   }
 
-  public int getLevel() {
+  public Integer getLevel() {
     return level;
   }
 
-  public void setLevel(int level) {
+  public void setLevel(Integer level) {
     this.level = level;
   }
 
@@ -50,10 +53,11 @@ public abstract class BuildingModel {
   }
 
   public void setTerritory(TerritoryModel territory) {
-    this.territory = territory;
+    this.territoryId = territory.getId();
   }
 
   public abstract InventoryModel upgrade(InventoryModel inventoryModel);
+
   public abstract InventoryModel repair(InventoryModel inventoryModel);
 
   public abstract int getGoldCost();
@@ -64,5 +68,6 @@ public abstract class BuildingModel {
 
   public abstract void reset();
 
+  public abstract String getType();
 
 }

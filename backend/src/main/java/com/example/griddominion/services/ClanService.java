@@ -18,7 +18,6 @@ import com.example.griddominion.utils.errors.*;
 
 import jakarta.transaction.Transactional;
 
-import org.checkerframework.checker.units.qual.m;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -135,7 +134,7 @@ public class ClanService {
 
     InventoryModel send = sender.getInventory();
     HashMap<Item, Integer> hashSend = send.getInventory();
-    int goldSender, woodSender, foodSender, goldReciver, woodReciver, foodReciver;
+    Integer goldSender, woodSender, foodSender, goldReciver, woodReciver, foodReciver;
     goldSender = hashSend.get(Item.GOLD) - resourcesTransferInput.gold;
     foodSender = hashSend.get(Item.FOOD) - resourcesTransferInput.food;
     woodSender = hashSend.get(Item.WOOD) - resourcesTransferInput.wood;

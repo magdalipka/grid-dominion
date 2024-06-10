@@ -91,7 +91,7 @@ public class UserModel {
     this.coordinates = coordinates;
   }
 
-  public int getExperience() {
+  public Integer getExperience() {
     return experience;
   }
 
@@ -110,7 +110,7 @@ public class UserModel {
     }
   }
 
-  public int getLevel() {
+  public Integer getLevel() {
     return level;
   }
 
@@ -118,7 +118,7 @@ public class UserModel {
     this.level = level;
   }
 
-  public int getExperienceToLevelUp() {
+  public Integer getExperienceToLevelUp() {
     return experienceToLevelUp;
   }
 

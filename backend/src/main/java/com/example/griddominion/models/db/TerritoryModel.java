@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 public class TerritoryModel {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private int id;
+  private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "owner_id", nullable = true)
@@ -37,13 +37,13 @@ public class TerritoryModel {
   private double minLongitude;
 
   @Column(name = "gold")
-  private int gold;
+  private Integer gold;
 
   @Column(name = "wood")
-  private int wood;
+  private Integer wood;
 
   @Column(name = "food")
-  private int food;
+  private Integer food;
 
   @OneToMany(mappedBy = "territory", fetch = FetchType.LAZY)
   private List<BuildingModel> buildings;
@@ -55,11 +55,7 @@ public class TerritoryModel {
     return buildings;
   }
 
-  public void setBuildings(List<BuildingModel> buildings) {
-    this.buildings = buildings;
-  }
-
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -107,7 +103,7 @@ public class TerritoryModel {
     this.minLongitude = minLongitude;
   }
 
-  public int getGold() {
+  public Integer getGold() {
     return gold;
   }
 
@@ -115,7 +111,7 @@ public class TerritoryModel {
     this.gold = gold;
   }
 
-  public int getWood() {
+  public Integer getWood() {
     return wood;
   }
 
@@ -123,7 +119,7 @@ public class TerritoryModel {
     this.wood = wood;
   }
 
-  public int getFood() {
+  public Integer getFood() {
     return food;
   }
 

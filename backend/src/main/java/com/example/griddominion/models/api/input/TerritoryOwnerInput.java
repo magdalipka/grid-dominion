@@ -1,6 +1,6 @@
 package com.example.griddominion.models.api.input;
 
 public class TerritoryOwnerInput {
-    public int Id;
-    public String userId;
+  public Integer Id;
+  public String userId;
 }

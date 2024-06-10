@@ -12,6 +12,16 @@ export type Territory = {
   wood: number;
   food: number;
   ownerNick: string;
+  minions: number;
+  buildings: Array<{
+    id: string;
+    level: number;
+    goldCost: number;
+    woodCost: number;
+    foodCost: number;
+    bonus: number;
+    type: string;
+  }>;
 };
 
 export const useTerritories = () =>

@@ -1,6 +1,7 @@
 import { request } from "@/lib/request";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { useCurrentUser } from "./useUser";
 
 export type Territory = {
   id: number;
@@ -90,4 +91,40 @@ export const useCurrentTerritory = ({
         t.minLongitude < longitude
     ),
   };
+};
+
+export const useAttackTerritory = () => {
+  const client = useQueryClient();
+  const { data: user } = useCurrentUser();
+
+  return useMutation({
+    mutationFn: async ({ territoryId }: { territoryId: number }) => {
+      const res = await (
+        await request("/territories/owner", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ Id: territoryId }),
+        })
+      ).json();
+      console.log({ res });
+      return res;
+    },
+    onSuccess: (data, { territoryId }) => {
+      console.log({ data, territoryId, user });
+      client.setQueryData(
+        ["territories"],
+        (oldData: Array<Territory>) => [
+          ...oldData!.map((t) =>
+            t.id === territoryId && data.win ? { ...t, ownerNick: user?.nick } : t
+          ),
+        ],
+        data
+      );
+    },
+    onMutate: () => {
+      client.refetchQueries({ queryKey: ["territories"] });
+    },
+  });
 };

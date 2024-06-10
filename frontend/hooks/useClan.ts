@@ -48,9 +48,8 @@ export const useCreateClan = () => {
     },
     onMutate: () =>
       setTimeout(() => {
-        client.invalidateQueries({ queryKey: ["myClan"] });
-        client.refetchQueries({ queryKey: ["myClan"] });
         client.refetchQueries({ queryKey: ["currentUser"] });
+        client.refetchQueries({ queryKey: ["myClan"] });
       }, 1000),
   });
 };
@@ -89,7 +88,7 @@ export const useApproveMember = (clanId?: string) => {
       return res;
     },
     onMutate: () => {
-      client.invalidateQueries({ queryKey: ["myClan"] });
+      client.refetchQueries({ queryKey: ["currentUser"] });
       client.refetchQueries({ queryKey: ["myClan"] });
     },
   });
@@ -127,7 +126,7 @@ export const useSendResources = () => {
       return res;
     },
     onMutate: () => {
-      client.invalidateQueries({ queryKey: ["myInventory"] });
+      client.refetchQueries({ queryKey: ["myInventory"] });
     },
   });
 };

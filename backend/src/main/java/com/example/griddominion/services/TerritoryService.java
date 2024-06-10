@@ -150,7 +150,7 @@ public class TerritoryService {
         TowerModel tower = (TowerModel) territory.getBuildings().stream()
                 .filter(building -> building instanceof TowerModel).findFirst()
                 .orElseThrow(() -> new NotFound("Tower not found"));
-        List<MinionModel> attackers =  user.getMinions();
+        List<MinionModel> attackers =  user.getInventory().getMinions();
         List<MinionModel> defenders = territory.getMinions();
         FightOutput opt = fight(attackers, defenders, tower);
         if(opt.win){

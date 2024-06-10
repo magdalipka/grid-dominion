@@ -45,4 +45,11 @@ public class InventoryModel {
   public Long getId() {
     return this.id;
   }
+  public List<MinionModel> getMinions() {
+    return minions;
+  }
+
+  public void setMinions(List<MinionModel> minions) {
+    this.minions = minions;
+  }
 }

@@ -11,7 +11,7 @@ import com.example.griddominion.models.api.output.FightOutput;
 import com.example.griddominion.models.api.output.TerritoryOutput;
 import com.example.griddominion.models.api.output.TerritoryOwnerOutput;
 import com.example.griddominion.services.TerritoryService;
-import com.example.griddominion.utils.Headers;
+import com.example.griddominion.services.UserService;
 
 import java.util.List;
 
@@ -19,30 +19,34 @@ import java.util.List;
 @RequestMapping("/territories")
 public class TerritoryController {
 
-    @Autowired
-    TerritoryService territoryService;
-    
-    @GetMapping()
-    public ResponseEntity<List<TerritoryOutput>> getAllTerritories() {
-        List<TerritoryOutput> territories = territoryService.getAllTerritories();
-        return ResponseEntity.ok(territories);
-    }
+  @Autowired
+  TerritoryService territoryService;
+  @Autowired
+  private UserService userService;
 
-    @GetMapping("/owners")
-    public ResponseEntity<List<TerritoryOwnerOutput>> getAllTerritoryOwners() {
-        List<TerritoryOwnerOutput> owners = territoryService.getAllTerritoryOwners();
-        return ResponseEntity.ok(owners);
-    }
+  @GetMapping()
+  public ResponseEntity<List<TerritoryOutput>> getAllTerritories() {
+    List<TerritoryOutput> territories = territoryService.getAllTerritories();
+    return ResponseEntity.ok(territories);
+  }
 
-    @PostMapping("/owner")
-    public ResponseEntity<FightOutput> updateOwner(@RequestBody TerritoryOwnerInput input) {
-        FightOutput opt  = territoryService.upddateOwner(input);
-        return ResponseEntity.ok().headers(new Headers().addSid("")).body(opt);
-    }
-    
-    @PostMapping("/buildings")
-    public ResponseEntity<List<BuildingOutput>> getTerritoryBuildings(@RequestBody TerritoryIdInput input) {
-        List<BuildingOutput> buildingOutputs = territoryService.getTerritoryBuildings(input);
-        return ResponseEntity.ok(buildingOutputs);
-    }
+  @GetMapping("/owners")
+  public ResponseEntity<List<TerritoryOwnerOutput>> getAllTerritoryOwners() {
+    List<TerritoryOwnerOutput> owners = territoryService.getAllTerritoryOwners();
+    return ResponseEntity.ok(owners);
+  }
+
+  @PostMapping("/owner")
+  public ResponseEntity<FightOutput> updateOwner(@RequestBody TerritoryOwnerInput input,
+      @CookieValue("sid") String authToken) {
+    var user = userService.getUserBySessionToken(authToken);
+    FightOutput opt = territoryService.upddateOwner(input, user);
+    return ResponseEntity.ok(opt);
+  }
+
+  @GetMapping("/buildings")
+  public ResponseEntity<List<BuildingOutput>> getTerritoryBuildings(@RequestBody TerritoryIdInput input) {
+    List<BuildingOutput> buildingOutputs = territoryService.getTerritoryBuildings(input);
+    return ResponseEntity.ok(buildingOutputs);
+  }
 }

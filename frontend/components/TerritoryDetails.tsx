@@ -1,4 +1,4 @@
-import { Territory } from "@/hooks/useTerritories";
+import { Territory, useAttackTerritory } from "@/hooks/useTerritories";
 import { Image, StyleSheet, View, Text, Button } from "react-native";
 import GoldIcon from "@/assets/icons/gold.svg";
 import WoodIcon from "@/assets/icons/wood.svg";
@@ -15,6 +15,7 @@ export const TerritoryDetails = ({ territory }: { territory?: Territory }) => {
   const { data: inventory } = useInventory();
 
   const { mutate: upgradeBuilding } = useUpgradeBuilding();
+  const { mutate: attackTerritory } = useAttackTerritory();
 
   return (
     <View style={styles.container}>
@@ -23,7 +24,7 @@ export const TerritoryDetails = ({ territory }: { territory?: Territory }) => {
       )}
       {/* <Text>{JSON.stringify(territory)}</Text> */}
       <View style={styles.detailsContainer}>
-        <View style={styles.resourcesContainer}>
+        <View style={{ flex: 1, ...styles.resourcesContainer }}>
           <View style={styles.resource}>
             <GoldIcon width={ICON_SIZE} height={ICON_SIZE} />
             <Text style={styles.resourceText}>{territory?.gold || 0}</Text>
@@ -37,7 +38,7 @@ export const TerritoryDetails = ({ territory }: { territory?: Territory }) => {
             <Text style={styles.resourceText}>{territory?.food || 0}</Text>
           </View>
         </View>
-        <View style={styles.resourcesContainer}>
+        <View style={{ flex: 1, ...styles.resourcesContainer }}>
           <View style={styles.army}>
             <Text style={styles.resourceText}>{territory?.minions || 0}</Text>
             <MeepleIcon width={ICON_SIZE} height={ICON_SIZE} />
@@ -49,7 +50,7 @@ export const TerritoryDetails = ({ territory }: { territory?: Territory }) => {
           <Text style={{ fontWeight: "bold" }}>Type</Text>
           <Text style={{ fontWeight: "bold" }}>Level</Text>
           <Text style={{ fontWeight: "bold" }}>Bonus</Text>
-          {territory?.ownerNick === user?.nick || true ? (
+          {territory?.ownerNick === user?.nick ? (
             <>
               <Text style={{ fontWeight: "bold" }}>Gold</Text>
               <Text style={{ fontWeight: "bold" }}>Wood</Text>
@@ -65,7 +66,7 @@ export const TerritoryDetails = ({ territory }: { territory?: Territory }) => {
             <Text>{building.type}</Text>
             <Text>{building.level ?? "x"}</Text>
             <Text>{building.bonus ?? "x"}</Text>
-            {territory?.ownerNick === user?.nick || true ? (
+            {territory?.ownerNick === user?.nick ? (
               <>
                 <Text>{building.goldCost}</Text>
                 <Text>{building.woodCost}</Text>
@@ -77,6 +78,7 @@ export const TerritoryDetails = ({ territory }: { territory?: Territory }) => {
                     inventory?.WOOD <= building.woodCost ||
                     inventory?.FOOD <= building.foodCost
                   }
+                  onPress={() => upgradeBuilding({ buildingId: building.id })}
                 />
               </>
             ) : (
@@ -85,6 +87,16 @@ export const TerritoryDetails = ({ territory }: { territory?: Territory }) => {
           </View>
         ))}
       </View>
+      {territory?.ownerNick !== user?.nick ? (
+        <View style={styles.resourcesContainer}>
+          <Button
+            title="Attack"
+            onPress={() => attackTerritory({ territoryId: territory?.id })}
+          />
+        </View>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };
@@ -93,8 +105,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    alignContent: "space-around",
+    alignContent: "flex-start",
+    alignItems: "stretch",
     justifyContent: "flex-start",
+    gap: 16,
   },
   header: {
     alignContent: "center",
@@ -102,13 +116,12 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   detailsContainer: {
-    flexDirection: "row",
-    padding: 16,
     width: "100%",
+    flexDirection: "row",
+    alignItems: "stretch",
+    padding: 16,
   },
   resourcesContainer: {
-    flex: 1,
-    width: "100%",
     display: "flex",
     gap: 8,
     // borderColor: "red",

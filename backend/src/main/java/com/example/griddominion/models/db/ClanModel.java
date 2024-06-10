@@ -70,7 +70,7 @@ public class ClanModel {
     this.isPrivate = false;
   }
 
-  public int getExperience() {
+  public Integer getExperience() {
     return experience;
   }
 
@@ -89,7 +89,7 @@ public class ClanModel {
     }
   }
 
-  public int getLevel() {
+  public Integer getLevel() {
     return level;
   }
 
@@ -97,7 +97,7 @@ public class ClanModel {
     this.level = level;
   }
 
-  public int getExperienceToLevelUp() {
+  public Integer getExperienceToLevelUp() {
     return experienceToLevelUp;
   }
 

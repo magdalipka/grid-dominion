@@ -37,126 +37,140 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class TerritoryService {
-    @Autowired
-    TerritoryRepository territoryRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    InventoryRepository inventoryRepository;
-    @Autowired
-    BuildingRepository buildingRepository;
+  @Autowired
+  TerritoryRepository territoryRepository;
+  @Autowired
+  UserRepository userRepository;
+  @Autowired
+  InventoryRepository inventoryRepository;
+  @Autowired
+  BuildingRepository buildingRepository;
 
-    @PostConstruct
-    public void initTerritories(){
-        if(territoryRepository.findAll().isEmpty()){
-        
+  @PostConstruct
+  public void initTerritories() {
+    if (territoryRepository.findAll().isEmpty()) {
+
       // https://krakow.stat.gov.pl/cps/rde/xbcr/krak/ASSETS_07m01_01.pdf
-        double north_most = 50.117;
-        double south_most = 49.966;
-        double west_most = 19.783;
-        double east_most = 20.217;
+      double north_most = 50.117;
+      double south_most = 49.966;
+      double west_most = 19.783;
+      double east_most = 20.217;
 
-        int squares = 50;
-        double diff_latitude = (north_most - south_most) / squares;
-        double diff_longitude = (east_most - west_most) / squares;
+      int squares = 50;
+      double diff_latitude = (north_most - south_most) / squares;
+      double diff_longitude = (east_most - west_most) / squares;
 
-        Random random = new Random();
+      Random random = new Random();
 
-        for (int i = 0; i < squares; i++) {
-          for (int j = 0; j < squares; j++) {
-            TerritoryModel territoryModel = new TerritoryModel();
-            territoryModel.setMinLatitude(south_most + i * diff_latitude);
-            territoryModel.setMaxLatitude(south_most + ((i + 1) * diff_latitude));
-            territoryModel.setMinLongitude(west_most + j * diff_longitude);
-            territoryModel.setMaxLongitude(west_most + (j + 1) * diff_longitude);
-            territoryModel.setBuildings(generateBuildings());
-            territoryModel.setGold(100 + random.nextInt(901));
-            territoryModel.setWood(100 + random.nextInt(901));
-            territoryModel.setFood(100 + random.nextInt(901));
-            territoryRepository.save(territoryModel);
+      for (int i = 0; i < squares; i++) {
+        for (int j = 0; j < squares; j++) {
+          TerritoryModel territoryModel = new TerritoryModel();
+          territoryModel.setMinLatitude(south_most + i * diff_latitude);
+          territoryModel.setMaxLatitude(south_most + ((i + 1) * diff_latitude));
+          territoryModel.setMinLongitude(west_most + j * diff_longitude);
+          territoryModel.setMaxLongitude(west_most + (j + 1) * diff_longitude);
+          territoryModel.setGold(100 + random.nextInt(901));
+          territoryModel.setWood(100 + random.nextInt(901));
+          territoryModel.setFood(100 + random.nextInt(901));
+          territoryRepository.save(territoryModel);
+
+          var buildings = generateBuildings();
+          for (var b : buildings) {
+            b.setTerritory(territoryModel);
+            buildingRepository.save(b);
           }
         }
       }
     }
+  }
 
-    private List<BuildingModel> generateBuildings(){
-      List<BuildingModel> buildings = new ArrayList<BuildingModel>();
+  private List<BuildingModel> generateBuildings() {
+    List<BuildingModel> buildings = new ArrayList<BuildingModel>();
 
-      GoldMineModel goldMine = new GoldMineModel();
-      buildingRepository.save(goldMine);
-      buildings.add(goldMine);
+    GoldMineModel goldMine = new GoldMineModel();
+    goldMine.setLevel(0);
+    buildings.add(goldMine);
 
-      LumberMillModel lumberMill = new LumberMillModel();
-      buildingRepository.save(lumberMill);
-      buildings.add(lumberMill);
+    LumberMillModel lumberMill = new LumberMillModel();
+    lumberMill.setLevel(0);
+    buildings.add(lumberMill);
 
-      FarmModel farm = new FarmModel();
-      buildingRepository.save(farm);
-      buildings.add(farm);
+    FarmModel farm = new FarmModel();
+    farm.setLevel(0);
+    buildings.add(farm);
 
-      TowerModel tower = new TowerModel();
-      buildingRepository.save(tower);
-      buildings.add(tower);
-      
-      return buildings;
-    }
-    @Transactional
-    @Scheduled(cron = "0 0/10 * * * ?")
-    public void addResources(){
-        List<TerritoryModel> territories = territoryRepository.findAll();
+    TowerModel tower = new TowerModel();
+    tower.setLevel(0);
+    buildings.add(tower);
 
-        for(TerritoryModel territory: territories){
-            UserModel owner = territory.getOwner();
-            if(owner!=null){
-              List<BuildingModel> buildings =  territory.getBuildings();
-              GoldMineModel goldMine = (GoldMineModel)buildings.stream().filter(building -> building instanceof GoldMineModel).findFirst().orElseThrow(()->new NotFound("No gold mine"));
-              LumberMillModel lumberMill = (LumberMillModel)buildings.stream().filter(building -> building instanceof LumberMillModel).findFirst().orElseThrow(()->new NotFound("No lumber mill"));
-              FarmModel farm = (FarmModel)buildings.stream().filter(building -> building instanceof FarmModel).findFirst().orElseThrow(()->new NotFound("No farm"));
-              InventoryModel inventory =  inventoryRepository.findByUserId(owner);
-              HashMap<Item,Integer> items = inventory.getInventory();
-              int current = items.get(Item.FOOD);
-              items.put(Item.FOOD, (int) Math.min(Constants.RESOURCE_LIMIT,current+territory.getFood()*(farm.getBonus()+1)));
-              current = items.get(Item.WOOD);
-              items.put(Item.WOOD, (int) Math.min(Constants.RESOURCE_LIMIT,current+territory.getWood()*(lumberMill.getBonus()+1)));
-              current = items.get(Item.GOLD);
-              items.put(Item.GOLD, (int) Math.min(Constants.RESOURCE_LIMIT,current+territory.getGold()*(goldMine.getBonus()+1)));
-              inventory.setInventory(items);
-              inventoryRepository.save(inventory);
-            }
-        }
-    }
+    return buildings;
+  }
 
-    public List<TerritoryOutput> getAllTerritories(){
-        List<TerritoryModel> territories = territoryRepository.findAll();
-        return territories.stream()
-                          .map(territory -> new TerritoryOutput(territory))
-                          .collect(Collectors.toList());
-    }
+  @Transactional
+  @Scheduled(cron = "0 0/10 * * * ?")
+  public void addResources() {
+    List<TerritoryModel> territories = territoryRepository.findAll();
 
-    public List<TerritoryOwnerOutput> getAllTerritoryOwners(){
-        List<TerritoryModel> territories = territoryRepository.findAll();
-        return territories.stream()
-                          .map(territory -> new TerritoryOwnerOutput(territory))
-                          .collect(Collectors.toList());
-    }
-
-    public void upddateOwner(TerritoryOwnerInput territoryOwnerInput){
-        UserModel user = userRepository.findById(territoryOwnerInput.userId).get();
-        TerritoryModel territory = territoryRepository.findById(territoryOwnerInput.Id).get();
-        territory.setOwner(user);
-        territoryRepository.save(territory);
-    }
-
-    public List<BuildingOutput> getTerritoryBuildings(TerritoryIdInput territoryIdInput) {
-      TerritoryModel territoryModel = territoryRepository.findById(territoryIdInput.id).orElse(null);
-      if(territoryModel == null){
-        throw new NotFound("No such territory");
+    for (TerritoryModel territory : territories) {
+      UserModel owner = territory.getOwner();
+      if (owner != null) {
+        List<BuildingModel> buildings = territory.getBuildings();
+        GoldMineModel goldMine = (GoldMineModel) buildings.stream()
+            .filter(building -> building instanceof GoldMineModel).findFirst()
+            .orElseThrow(() -> new NotFound("No gold mine"));
+        LumberMillModel lumberMill = (LumberMillModel) buildings.stream()
+            .filter(building -> building instanceof LumberMillModel).findFirst()
+            .orElseThrow(() -> new NotFound("No lumber mill"));
+        FarmModel farm = (FarmModel) buildings.stream().filter(building -> building instanceof FarmModel).findFirst()
+            .orElseThrow(() -> new NotFound("No farm"));
+        InventoryModel inventory = inventoryRepository.findByUserId(owner);
+        HashMap<Item, Integer> items = inventory.getInventory();
+        Integer current = items.get(Item.FOOD);
+        items.put(Item.FOOD,
+            (int) Math.min(Constants.RESOURCE_LIMIT, current + territory.getFood() * (farm.getBonus() + 1)));
+        current = items.get(Item.WOOD);
+        items.put(Item.WOOD,
+            (int) Math.min(Constants.RESOURCE_LIMIT, current + territory.getWood() * (lumberMill.getBonus() + 1)));
+        current = items.get(Item.GOLD);
+        items.put(Item.GOLD,
+            (int) Math.min(Constants.RESOURCE_LIMIT, current + territory.getGold() * (goldMine.getBonus() + 1)));
+        inventory.setInventory(items);
+        inventoryRepository.save(inventory);
       }
-      List<BuildingModel> buildingModels = territoryModel.getBuildings();
-      List<BuildingOutput> buildingOutputs = new ArrayList<>();
-      for (BuildingModel model : buildingModels) {
-         buildingOutputs.add(BuildingOutputFactory.createOutput(model));
-      }
-      return buildingOutputs;
     }
+  }
+
+  public List<TerritoryOutput> getAllTerritories() {
+    List<TerritoryModel> territories = territoryRepository.findAll();
+    return territories.stream()
+        .map(territory -> new TerritoryOutput(territory))
+        .collect(Collectors.toList());
+  }
+
+  public List<TerritoryOwnerOutput> getAllTerritoryOwners() {
+    List<TerritoryModel> territories = territoryRepository.findAll();
+    return territories.stream()
+        .map(territory -> new TerritoryOwnerOutput(territory))
+        .collect(Collectors.toList());
+  }
+
+  public void upddateOwner(TerritoryOwnerInput territoryOwnerInput) {
+    UserModel user = userRepository.findById(territoryOwnerInput.userId).get();
+    TerritoryModel territory = territoryRepository.findById(territoryOwnerInput.Id).get();
+    territory.setOwner(user);
+    territoryRepository.save(territory);
+  }
+
+  public List<BuildingOutput> getTerritoryBuildings(TerritoryIdInput territoryIdInput) {
+    TerritoryModel territoryModel = territoryRepository.findById(territoryIdInput.id).orElse(null);
+    if (territoryModel == null) {
+      throw new NotFound("No such territory");
+    }
+    List<BuildingModel> buildingModels = territoryModel.getBuildings();
+    List<BuildingOutput> buildingOutputs = new ArrayList<>();
+    for (BuildingModel model : buildingModels) {
+      buildingOutputs.add(BuildingOutputFactory.createOutput(model));
+    }
+    return buildingOutputs;
+  }
 }

@@ -2,7 +2,7 @@ import { Image, StyleSheet, View, Text, Button } from "react-native";
 
 import { useAuth } from "@/contexts/auth";
 import MapView, { Marker, Polygon } from "react-native-maps";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import * as Location from "expo-location";
@@ -13,6 +13,7 @@ import {
 } from "@/hooks/useTerritories";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { TerritoryDetails } from "@/components/TerritoryDetails";
+import { useMyClan } from "@/hooks/useClan";
 // import * as TaskManager from "expo-task-manager";
 
 // const LOCATION_TASK_NAME = "griddominion-update-location";
@@ -44,7 +45,12 @@ export default function HomeScreen() {
     longitude: number;
     latitude: number;
   } | null>(null);
-  const [focusCenter, setFocusCenter] = useState();
+  const [focusCenter, setFocusCenter] = useState<{
+    longitude: number;
+    latitude: number;
+  } | null>(location);
+
+  const { data: clan } = useMyClan();
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -77,8 +83,12 @@ export default function HomeScreen() {
     setSelectedTerritory(undefined);
   }, []);
 
+  useEffect(() => {
+    console.log({ location, focusCenter });
+  }, [location, focusCenter]);
+
   const { territories, isLoading } = useVisibleTerritories({
-    ...location,
+    ...(focusCenter || location),
     radius: 0.04,
   });
 
@@ -93,7 +103,6 @@ export default function HomeScreen() {
       </View>
     );
   }
-
   return (
     <>
       <MapView
@@ -106,7 +115,7 @@ export default function HomeScreen() {
         showsUserLocation
         followsUserLocation
         minZoomLevel={13}
-        // onRegionChangeComplete={}
+        onRegionChangeComplete={setFocusCenter}
       >
         {territories.map((t) => (
           <Polygon
@@ -117,7 +126,13 @@ export default function HomeScreen() {
               { latitude: t.minLatitude, longitude: t.minLongitude },
               { latitude: t.minLatitude, longitude: t.maxLongitude },
             ]}
-            fillColor="#00005555"
+            fillColor={
+              t.ownerNick === user?.nick
+                ? "#00005555"
+                : clan?.users.map(({ nick }) => nick).includes(t.ownerNick)
+                ? "#00005522"
+                : "transparent"
+            }
             strokeWidth={
               t.id === selectedTerritory?.id ? 1 : t.id === currentTerritory?.id ? 0.1 : 0
             }

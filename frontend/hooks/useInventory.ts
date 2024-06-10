@@ -11,6 +11,11 @@ export const useInventory = () =>
         })
       ).json();
       console.log({ res });
-      return res.inventoryHashMap as { WOOD: number; FOOD: number; GOLD: number };
+      return res.inventoryHashMap as {
+        WOOD: number;
+        FOOD: number;
+        GOLD: number;
+        MINION: number;
+      };
     },
   });

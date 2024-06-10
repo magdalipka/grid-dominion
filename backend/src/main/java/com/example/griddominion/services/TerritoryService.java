@@ -141,6 +141,7 @@ public class TerritoryService {
         inventoryRepository.save(inventory);
       }
     }
+  }
 
     public FightOutput upddateOwner(TerritoryOwnerInput territoryOwnerInput){
         UserModel user = userRepository.findById(territoryOwnerInput.userId).get();
@@ -197,6 +198,8 @@ public class TerritoryService {
     for (BuildingModel model : buildingModels) {
       buildingOutputs.add(BuildingOutputFactory.createOutput(model));
     }
+    return buildingOutputs;
+  }
 
     private FightOutput fight(List<MinionModel> atackers, List<MinionModel> defenders, TowerModel tower){
       while (!atackers.isEmpty() && !defenders.isEmpty()) {
@@ -259,6 +262,5 @@ public class TerritoryService {
       return new FightOutput(true,atackers,null);
     }
 
-    return buildingOutputs;
-  }
+
 }

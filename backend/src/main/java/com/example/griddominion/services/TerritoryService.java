@@ -261,4 +261,5 @@ public class TerritoryService {
       minionRepository.save(atackers.get(0));
       return new FightOutput(true,atackers,null);
     }
+
 }

@@ -88,7 +88,7 @@ public class ClanService {
   public void addUserToApprovalList(UserModel user, ClanModel clan) {
     if (clan.getUsersList().size() < Constants.MAX_CLAN_MEMBERS) {
       clan.getUsersToApprove().add(user);
-      user.setClan(clan);
+      clanRepository.save(clan);
     } else {
       throw new InsufficientStorage("Clan is full!");
     }
@@ -121,7 +121,7 @@ public class ClanService {
 
   @Transactional
   public void sendResources(UserModel sender, ResourcesTransferInput resourcesTransferInput) {
-    UserModel reciver = userRepository.findByNick(resourcesTransferInput.reciverNick);
+    UserModel reciver = userRepository.findByNick(resourcesTransferInput.receiverNick);
     if (sender == null || reciver == null) {
       throw new Unauthorized("User not found");
     }

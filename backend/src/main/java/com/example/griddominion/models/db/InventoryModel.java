@@ -4,6 +4,7 @@ import com.example.griddominion.utils.Item;
 import jakarta.persistence.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Entity
 @Table(name = "inventories")
@@ -14,6 +15,9 @@ public class InventoryModel {
 
   @Column(name = "inventoryHashMap")
   private HashMap<Item, Integer> inventoryHashMap;
+
+  @OneToMany(mappedBy = "inventory_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<MinionModel> minions;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", referencedColumnName = "id")

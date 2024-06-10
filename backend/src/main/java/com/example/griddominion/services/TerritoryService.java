@@ -119,28 +119,29 @@ public class TerritoryService {
       if (owner != null) {
         List<BuildingModel> buildings = territory.getBuildings();
         GoldMineModel goldMine = (GoldMineModel) buildings.stream()
-            .filter(building -> building instanceof GoldMineModel).findFirst()
-            .orElseThrow(() -> new NotFound("No gold mine"));
+                .filter(building -> building instanceof GoldMineModel).findFirst()
+                .orElseThrow(() -> new NotFound("No gold mine"));
         LumberMillModel lumberMill = (LumberMillModel) buildings.stream()
-            .filter(building -> building instanceof LumberMillModel).findFirst()
-            .orElseThrow(() -> new NotFound("No lumber mill"));
+                .filter(building -> building instanceof LumberMillModel).findFirst()
+                .orElseThrow(() -> new NotFound("No lumber mill"));
         FarmModel farm = (FarmModel) buildings.stream().filter(building -> building instanceof FarmModel).findFirst()
-            .orElseThrow(() -> new NotFound("No farm"));
+                .orElseThrow(() -> new NotFound("No farm"));
         InventoryModel inventory = inventoryRepository.findByUserId(owner);
         HashMap<Item, Integer> items = inventory.getInventory();
         Integer current = items.get(Item.FOOD);
         items.put(Item.FOOD,
-            (int) Math.min(Constants.RESOURCE_LIMIT, current + territory.getFood() * (farm.getBonus() + 1)));
+                (int) Math.min(Constants.RESOURCE_LIMIT, current + territory.getFood() * (farm.getBonus() + 1)));
         current = items.get(Item.WOOD);
         items.put(Item.WOOD,
-            (int) Math.min(Constants.RESOURCE_LIMIT, current + territory.getWood() * (lumberMill.getBonus() + 1)));
+                (int) Math.min(Constants.RESOURCE_LIMIT, current + territory.getWood() * (lumberMill.getBonus() + 1)));
         current = items.get(Item.GOLD);
         items.put(Item.GOLD,
-            (int) Math.min(Constants.RESOURCE_LIMIT, current + territory.getGold() * (goldMine.getBonus() + 1)));
+                (int) Math.min(Constants.RESOURCE_LIMIT, current + territory.getGold() * (goldMine.getBonus() + 1)));
         inventory.setInventory(items);
         inventoryRepository.save(inventory);
       }
     }
+  }
 
     public FightOutput upddateOwner(TerritoryOwnerInput territoryOwnerInput){
         UserModel user = userRepository.findById(territoryOwnerInput.userId).get();
@@ -197,6 +198,8 @@ public class TerritoryService {
     for (BuildingModel model : buildingModels) {
       buildingOutputs.add(BuildingOutputFactory.createOutput(model));
     }
+    return buildingOutputs;
+  }
 
     private FightOutput fight(List<MinionModel> atackers, List<MinionModel> defenders, TowerModel tower){
       while (!atackers.isEmpty() && !defenders.isEmpty()) {
@@ -258,7 +261,4 @@ public class TerritoryService {
       minionRepository.save(atackers.get(0));
       return new FightOutput(true,atackers,null);
     }
-
-    return buildingOutputs;
-  }
 }

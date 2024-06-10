@@ -34,7 +34,7 @@ public class MinionModel {
   private UserModel owner;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "inventory_id")
+  @JoinColumn(name = "inventory_id", nullable = true)
   private InventoryModel inventory;
 
   @ManyToOne(fetch = FetchType.LAZY)

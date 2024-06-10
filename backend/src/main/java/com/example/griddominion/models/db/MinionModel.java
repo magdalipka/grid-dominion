@@ -34,6 +34,10 @@ public class MinionModel {
   private UserModel owner;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "inventory_id")
+  private InventoryModel inventory;
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "territory_id", nullable = true)
   private TerritoryModel territory;
 

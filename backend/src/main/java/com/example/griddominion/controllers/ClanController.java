@@ -79,14 +79,14 @@ public class ClanController {
     if (clan.getUsersList().contains(user)) {
       return ResponseEntity.badRequest().body("User is already in clan.");
     }
-    if (clan.getUsersToApprove().contains(user) == false) {
-      return ResponseEntity.badRequest().body("User is not waiting for approval in this class.");
+    if (clan.getUsersToApprove().contains(user)) {
+      return ResponseEntity.badRequest().body("User is already waiting for approval in this class.");
     }
     clanService.addUserToApprovalList(user, clan);
     return ResponseEntity.ok().body("User was added to approval list.");
   }
 
-  @GetMapping("/{clan_id}/approveUser/{user_id}")
+  @PostMapping("/{clan_id}/approveUser/{user_id}")
   public ResponseEntity<?> approveUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String user_id,
       @CookieValue("sid") String authToken) {
     try {
@@ -110,7 +110,7 @@ public class ClanController {
     }
   }
 
-  @GetMapping("/{clan_id}/rejectUser/{user_id}")
+  @PostMapping("/{clan_id}/rejectUser/{user_id}")
   public ResponseEntity<?> rejectUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String userId,
       @CookieValue("sid") String authToken) {
     try {
@@ -135,7 +135,7 @@ public class ClanController {
     }
   }
 
-  @GetMapping("/{clan_id}/removeUser/{user_id}")
+  @PostMapping("/{clan_id}/removeUser/{user_id}")
   public ResponseEntity<?> removeUser(@PathVariable("clan_id") String clanId, @PathVariable("user_id") String userId,
       @CookieValue("sid") String authToken) {
     try {

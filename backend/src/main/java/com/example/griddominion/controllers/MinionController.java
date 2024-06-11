@@ -15,9 +15,9 @@ public class MinionController {
     private MinionRepository minionRepository;
 
 
-    @PutMapping("/{minionId}/moveTo/{territoryId}")
-    public void moveMinionToTerritory(@PathVariable String minionId, @PathVariable String territoryId, @CookieValue(value = "sid") String sid) {
-        minionService.moveMinionToTerritory(minionId, territoryId, sid);
+    @PutMapping("/{minionId}/setDestination/{territoryId}")
+    public void moveMinionToTerritory(@PathVariable String minionId, @PathVariable Integer territoryId, @CookieValue(value = "sid") String sid) {
+        minionService.setDestination(minionId, territoryId, sid);
     }
 
 

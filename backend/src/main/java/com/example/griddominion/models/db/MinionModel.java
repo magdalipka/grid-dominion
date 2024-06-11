@@ -41,6 +41,10 @@ public class MinionModel {
   @JoinColumn(name = "territory_id", nullable = true)
   private TerritoryModel territory;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "destination_territory_id", nullable = true)
+  private TerritoryModel destinationTerritory;
+
   public MinionModel() {
   }
 
@@ -122,6 +126,14 @@ public class MinionModel {
 
   public void setTerritory(TerritoryModel territory) {
     this.territory = territory;
+  }
+
+  public TerritoryModel getDestinationTerritory() {
+    return destinationTerritory;
+  }
+
+  public void setDestinationTerritory(TerritoryModel destinationTerritory) {
+    this.destinationTerritory = destinationTerritory;
   }
 
   @Override

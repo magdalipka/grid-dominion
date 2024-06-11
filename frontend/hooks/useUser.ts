@@ -1,30 +1,33 @@
 import { useAuth } from "@/contexts/auth";
 import { request } from "@/lib/request";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useCurrentUser = () => {
-  const { login, credentials } = useAuth();
   return useQuery({
     queryKey: ["currentUser"],
     queryFn: async (): Promise<{ id: string; nick: string; clanId?: string }> => {
-      try {
-        const res = await (
-          await request("/users", {
-            method: "GET",
-          })
-        ).json();
-        console.log({ currentUser: res });
-        return res as { id: string; nick: string; clanId?: string };
-      } catch {
-        await login(credentials);
-        const res = await (
-          await request("/users", {
-            method: "GET",
-          })
-        ).json();
-        console.log({ currentUser: res });
-        return res as { id: string; nick: string; clanId?: string };
-      }
+      const res = await (
+        await request("/users", {
+          method: "GET",
+        })
+      ).json();
+      console.log({ currentUser: res });
+      return res as { id: string; nick: string; clanId?: string };
+    },
+  });
+};
+
+export const useLogout = () => {
+  const { logout } = useAuth();
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      logout();
+      return null;
+    },
+    onMutate: () => {
+      client.invalidateQueries({ queryKey: ["currentUser"] });
+      // client.refetchQueries({ queryKey: ["currentUser"] });
     },
   });
 };

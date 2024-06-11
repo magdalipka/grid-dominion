@@ -5,8 +5,8 @@ const AuthContext = React.createContext<{
   isLoading: boolean;
   user: { nick: string } | null;
   login: (_: { nick: string; password: string }) => Promise<void>;
+  logout: () => Promise<void>;
   register: (_: { nick: string; password: string }) => void;
-  credentials: { nick: string; password: string };
 }>({
   isLoading: true,
   user: null,
@@ -16,9 +16,8 @@ const AuthContext = React.createContext<{
   register: function (_: { nick: string; password: string }): void {
     throw new Error("Function not implemented.");
   },
-  credentials: {
-    nick: "",
-    password: "",
+  logout: function (): Promise<void> {
+    throw new Error("Function not implemented.");
   },
 });
 
@@ -28,7 +27,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [credentials, setCredentials] = React.useState<{
     nick: string;
     password: string;
-  }>({ nick: "", password: "" });
+  } | null>({ nick: "", password: "" });
 
   const initSession = React.useCallback(async () => {
     try {
@@ -90,14 +89,26 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     []
   );
 
+  const logout = React.useCallback(async () => {
+    const res = await (
+      await request("/users/logout", {
+        method: "POST",
+      })
+    ).json();
+    if (!res.error) {
+      console.log({ res });
+    }
+    setSession(null);
+    setCredentials(null);
+    setIsLoading(false);
+  }, []);
+
   React.useEffect(() => {
     initSession();
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ isLoading, user: session, login, register, credentials }}
-    >
+    <AuthContext.Provider value={{ isLoading, user: session, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

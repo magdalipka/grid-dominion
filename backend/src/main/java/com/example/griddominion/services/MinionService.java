@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
@@ -25,7 +26,7 @@ public class MinionService {
     @Autowired
     private UserService userService;
 
-    public void moveMinionToTerritory(String minionId, Integer territoryId, String callerSid) {
+    public void setDestination(String minionId, Integer territoryId, String callerSid) {
         MinionModel minion = minionRepository.findById(minionId).orElseThrow(() -> new NotFound("Minion not found"));
 
         // Check if caller is minion's owner
@@ -35,24 +36,96 @@ public class MinionService {
 
         TerritoryModel targetTerritory = territoryRepository.findById(territoryId).orElseThrow(() -> new NotFound("Target territory not found"));
 
-        performMove(minion, targetTerritory);
+        minion.setDestinationTerritory(targetTerritory);
     }
 
-    // Method to be executed after 5 minutes
+
     @Transactional
-    @Scheduled(initialDelay = Constants.MINION_MOVE_DELAY_MS, fixedDelay=Long.MAX_VALUE)
-    public void performMove(MinionModel minion, TerritoryModel targetTerritory) {
-        TerritoryModel originalTerritory = minion.getTerritory();
-        originalTerritory.getMinions().remove(minion);
+    @Scheduled(fixedRate = Constants.MINIONS_STEP_TICK_MS)
+    public void performStepForAll() {
+        List<MinionModel> allMinions = minionRepository.findAll();
 
-        targetTerritory.getMinions().add(minion);
+        for (MinionModel minion : allMinions) {
+            TerritoryModel currentTerritory = minion.getTerritory();
+            TerritoryModel destinationTerritory = minion.getDestinationTerritory();
 
-        minion.setTerritory(targetTerritory);
+            // Check if the minion has a destination territory and it's not the same as the current territory
+            if (destinationTerritory != null && !currentTerritory.equals(destinationTerritory)) {
+                // Calculate the direction towards the destination territory
+                int dx = (destinationTerritory.getId() % 50) - (currentTerritory.getId() % 50);
+                int dy = (destinationTerritory.getId() / 50) - (currentTerritory.getId() / 50);
+                int d;
 
-        territoryRepository.save(originalTerritory);
-        territoryRepository.save(targetTerritory);
-        minionRepository.save(minion);
+                // Move the minion to an adjacent territory closer to the destination
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    // Move in the x-axis direction
+                    if (dx > 0) {
+                        // Move right
+                        d = 1;
+                    } else {
+                        // Move left
+                        d = -1;
+                    }
+                    if(getTerritoryById(currentTerritory.getId() + d).getOwner() != null) {
+                        if (getTerritoryById(currentTerritory.getId() + d).getOwner().getId().equals(minion.getOwner().getId()) == false){
+                            // Move in the y-axis direction
+                            if (dy > 0) {
+                                // Move down
+                                d = 50;
+                            } else {
+                                // Move up
+                                d = -50;
+                            }
+                        }
+                    }
+                } else {
+                    // Move in the y-axis direction
+                    if (dy > 0) {
+                        // Move down
+                        d = 50;
+                    } else {
+                        // Move up
+                        d = -50;
+                    }
+                    if(getTerritoryById(currentTerritory.getId() + d).getOwner() != null) {
+                        if (getTerritoryById(currentTerritory.getId() + d).getOwner().getId().equals(minion.getOwner().getId()) == false){
+                            // Move in the x-axis direction
+                            if (dx > 0) {
+                                // Move right
+                                d = 1;
+                            } else {
+                                // Move left
+                                d = -1;
+                            }
+                        }
+                    }
+                }
+
+                if(getTerritoryById(currentTerritory.getId() + d).getOwner() != null) {
+                    if (getTerritoryById(currentTerritory.getId() + d).getOwner().getId().equals(minion.getOwner().getId()) == false) {
+                        minion.setDestinationTerritory(null);
+                        continue;
+                    }
+                }
+
+                minion.getTerritory().getMinions().remove(minion);
+                minion.setTerritory(getTerritoryById(currentTerritory.getId() + d));
+                getTerritoryById(currentTerritory.getId() + d).getMinions().add(minion);
+
+            } else {
+                // If the minion doesn't have a destination or it's already in the destination territory, clear the destination
+                minion.setDestinationTerritory(null);
+            }
+        }
     }
+
+    // Helper method to get territory by ID
+    private TerritoryModel getTerritoryById(int id) {
+        return territoryRepository.findById(id).orElse(null);
+    }
+
+
+
 
 
 

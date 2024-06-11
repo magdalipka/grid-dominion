@@ -54,7 +54,7 @@ public final class Constants {
     public static final int MINION_GOLD_COST = 1000;
     public static final int MINION_WOOD_COST = 400;
     public static final int MINION_FOOD_COST = 2000;
-    public static final long MINION_MOVE_DELAY_MS = 300000;
+    public static final long MINIONS_STEP_TICK_MS = 300000;
 
     private Constants() {
         // Prevent instantiation

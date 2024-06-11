@@ -8,15 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RestController
 @RequestMapping("/minions")
 public class MinionController {
-  @Autowired()
-  private MinionService minionService;
-  @Autowired()
-  private MinionRepository minionRepository;
 
-  @PutMapping("/{minionId}/moveTo/{territoryId}")
-  public void moveMinionToTerritory(@PathVariable String minionId, @PathVariable Integer territoryId,
-      @CookieValue(value = "sid") String sid) {
-    minionService.moveMinionToTerritory(minionId, territoryId, sid);
-  }
+    @Autowired()
+    private MinionService minionService;
+    @Autowired()
+    private MinionRepository minionRepository;
+
+
+    @PutMapping("/{minionId}/setDestination/{territoryId}")
+    public void moveMinionToTerritory(@PathVariable String minionId, @PathVariable Integer territoryId, @CookieValue(value = "sid") String sid) {
+        minionService.setDestination(minionId, territoryId, sid);
+    }
 
 }

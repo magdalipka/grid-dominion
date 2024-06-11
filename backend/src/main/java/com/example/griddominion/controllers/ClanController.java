@@ -33,8 +33,7 @@ public class ClanController {
     var user = userService.getUserBySessionToken(authToken);
     var clan = clanService.createClan(input, user);
     var clanOutput = new ClanOutput(clan);
-    return ResponseEntity.ok().headers(
-        new Headers().addSid(clan.getId())).body(clanOutput);
+    return ResponseEntity.ok(clanOutput);
   }
 
   @GetMapping()

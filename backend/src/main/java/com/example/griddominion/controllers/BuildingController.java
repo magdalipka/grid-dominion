@@ -8,29 +8,29 @@ import com.example.griddominion.models.api.input.BuildingUpgradeInput;
 import com.example.griddominion.models.api.output.BuildingOutput;
 import com.example.griddominion.models.api.output.MinionOutput;
 import com.example.griddominion.services.BuildingService;
-import com.example.griddominion.utils.Headers;
 
 @RestController
 @RequestMapping("/buildings")
 public class BuildingController {
 
-    @Autowired
-    BuildingService buildingService;
+  @Autowired
+  BuildingService buildingService;
 
-    @PostMapping("/upgrade")
-    public ResponseEntity<BuildingOutput> upgradeBuilding(@RequestBody BuildingUpgradeInput input) {
-        BuildingOutput buildingOutput = buildingService.upgradeBuilding(input);
-        return ResponseEntity.ok().headers(new Headers().addSid("")).body(buildingOutput);
-    }
-    @PostMapping("/repair")
-    public ResponseEntity<BuildingOutput> repairBuilding(@RequestBody BuildingUpgradeInput input) {
-        BuildingOutput buildingOutput = buildingService.repairTower(input);
-        return ResponseEntity.ok().headers(new Headers().addSid("")).body(buildingOutput);
-    }
+  @PostMapping("/upgrade")
+  public ResponseEntity<BuildingOutput> upgradeBuilding(@RequestBody BuildingUpgradeInput input) {
+    BuildingOutput buildingOutput = buildingService.upgradeBuilding(input);
+    return ResponseEntity.ok(buildingOutput);
+  }
 
-    @PostMapping("/tower/minion")
-    public ResponseEntity<MinionOutput> creteMinion(@RequestBody BuildingUpgradeInput input) {
-        MinionOutput minionOutput = buildingService.createMinionInTower(input);
-        return ResponseEntity.ok().headers(new Headers().addSid("")).body(minionOutput);
-    }
+  @PostMapping("/repair")
+  public ResponseEntity<BuildingOutput> repairBuilding(@RequestBody BuildingUpgradeInput input) {
+    BuildingOutput buildingOutput = buildingService.repairTower(input);
+    return ResponseEntity.ok(buildingOutput);
+  }
+
+  @PostMapping("/tower/minion")
+  public ResponseEntity<MinionOutput> creteMinion(@RequestBody BuildingUpgradeInput input) {
+    MinionOutput minionOutput = buildingService.createMinionInTower(input);
+    return ResponseEntity.ok(minionOutput);
+  }
 }

@@ -15,6 +15,7 @@ public class TerritoryOutput {
   public Integer gold;
   public Integer wood;
   public Integer food;
+  public Integer minions;
   public String ownerNick;
   public List<BuildingOutput> buildings;
 
@@ -27,6 +28,7 @@ public class TerritoryOutput {
     this.gold = territoryModel.getGold();
     this.wood = territoryModel.getWood();
     this.food = territoryModel.getFood();
+    this.minions = territoryModel.getMinions();
     this.ownerNick = (territoryModel.getOwner() != null) ? territoryModel.getOwner().getNick() : null;
     this.buildings = territoryModel.getBuildings().stream()
         .map(building -> BuildingOutputFactory.createOutput(building))

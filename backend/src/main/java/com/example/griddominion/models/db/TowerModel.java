@@ -1,14 +1,10 @@
 package com.example.griddominion.models.db;
 
 import java.util.HashMap;
-import java.util.UUID;
-
-import org.springframework.data.util.Pair;
 
 import com.example.griddominion.utils.Constants;
 import com.example.griddominion.utils.Item;
 import com.example.griddominion.utils.errors.BadRequest;
-import com.example.griddominion.utils.errors.Forbidden;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
@@ -141,42 +137,6 @@ public class TowerModel extends BuildingModel {
     healthCurrent = 0;
     healthMax = 0;
     level = 0;
-  }
-
-  public Pair<MinionModel, InventoryModel> createMinion(InventoryModel inventoryModel) {
-    if (level == 0) {
-      throw new Forbidden("Tower must have some level");
-    }
-    if (!canCreateMinion(inventoryModel)) {
-      throw new BadRequest("Not enough resources to create a minion");
-    }
-
-    HashMap<Item, Integer> resources = inventoryModel.getInventory();
-    resources.put(Item.GOLD, resources.get(Item.GOLD) - getMinionGoldCost());
-    resources.put(Item.WOOD, resources.get(Item.WOOD) - getMinionWoodCost());
-    resources.put(Item.FOOD, resources.get(Item.FOOD) - getMinionFoodCost());
-    inventoryModel.setInventory(resources);
-
-    MinionModel minion = new MinionModel();
-    minion.setId(UUID.randomUUID().toString());
-    minion.setLevel(1);
-    minion.setExperience(0);
-    minion.setExperienceToLevelUp(50);
-    minion.setMovementSpeed(5.0);
-    minion.setAttackDamage(150);
-    minion.setAttackSpeed(1.0);
-    minion.setHp(600.0);
-    minion.setOwner(this.getTerritory().getOwner());
-    minion.setTerritory(this.getTerritory());
-
-    return Pair.of(minion, inventoryModel);
-  }
-
-  private boolean canCreateMinion(InventoryModel inventoryModel) {
-    HashMap<Item, Integer> resources = inventoryModel.getInventory();
-    return resources.get(Item.GOLD) >= getMinionGoldCost() &&
-        resources.get(Item.WOOD) >= getMinionWoodCost() &&
-        resources.get(Item.FOOD) >= getMinionFoodCost();
   }
 
   public int getMinionGoldCost() {

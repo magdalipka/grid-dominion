@@ -38,7 +38,7 @@ export default function InventoryScreen() {
         </View>
         <View style={styles.resource}>
           <MeepleIcon width={ICON_SIZE} height={ICON_SIZE} />
-          <Text style={styles.resourceText}>{inventory?.MINION || 0}</Text>
+          <Text style={styles.resourceText}>{inventory?.MINIONS || 0}</Text>
         </View>
       </View>
     </SafeAreaView>

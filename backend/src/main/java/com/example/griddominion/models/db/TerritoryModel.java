@@ -45,11 +45,11 @@ public class TerritoryModel {
   @Column(name = "food")
   private Integer food;
 
-  @OneToMany(mappedBy = "territory", fetch = FetchType.LAZY)
-  private List<BuildingModel> buildings;
+  @Column(name = "minions", nullable = true)
+  private Integer minions;
 
   @OneToMany(mappedBy = "territory", fetch = FetchType.LAZY)
-  private List<MinionModel> minions;
+  private List<BuildingModel> buildings;
 
   public List<BuildingModel> getBuildings() {
     return buildings;
@@ -127,11 +127,11 @@ public class TerritoryModel {
     this.food = food;
   }
 
-  public List<MinionModel> getMinions() {
-    return minions;
+  public Integer getMinions() {
+    return minions != null ? minions : 0;
   }
 
-  public void setMinions(List<MinionModel> minions) {
+  public void setMinions(int minions) {
     this.minions = minions;
   }
 

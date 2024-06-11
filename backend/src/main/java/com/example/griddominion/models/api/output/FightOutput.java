@@ -1,30 +1,14 @@
 package com.example.griddominion.models.api.output;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.example.griddominion.models.db.MinionModel;
-import com.example.griddominion.models.db.TowerModel;
-
 public class FightOutput {
   public boolean win;
-  public List<MinionOutput> leftMinions;
-  public TowerOutput towerOutput;
+  public int territoryMinions;
+  public int inventoryMinions;
 
-  public FightOutput(boolean win, List<MinionModel> minions, TowerModel tower) {
+  public FightOutput(boolean win, Integer territory, Integer inventory) {
     this.win = win;
-    if (tower != null) {
-      towerOutput = new TowerOutput(tower);
-    }
-    leftMinions = new ArrayList<>();
-    for (MinionModel minion : minions) {
-      leftMinions.add(new MinionOutput(minion));
-    }
+    territoryMinions = territory;
+    inventoryMinions = inventory;
   }
 
-  public FightOutput(boolean win, List<MinionOutput> minions, TowerOutput tower) {
-    this.win = win;
-    towerOutput = tower;
-    leftMinions = minions;
-  }
 }

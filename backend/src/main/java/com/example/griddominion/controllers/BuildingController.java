@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.griddominion.models.api.input.BuildingUpgradeInput;
 import com.example.griddominion.models.api.output.BuildingOutput;
-import com.example.griddominion.models.api.output.MinionOutput;
+
 import com.example.griddominion.services.BuildingService;
 
 @RestController
@@ -28,9 +28,4 @@ public class BuildingController {
     return ResponseEntity.ok(buildingOutput);
   }
 
-  @PostMapping("/tower/minion")
-  public ResponseEntity<MinionOutput> creteMinion(@RequestBody BuildingUpgradeInput input) {
-    MinionOutput minionOutput = buildingService.createMinionInTower(input);
-    return ResponseEntity.ok(minionOutput);
-  }
 }

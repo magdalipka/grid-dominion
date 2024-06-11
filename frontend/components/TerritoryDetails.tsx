@@ -1,4 +1,4 @@
-import { Territory, useAttackTerritory } from "@/hooks/useTerritories";
+import { Territory, useAttackTerritory, useMinionMovement } from "@/hooks/useTerritories";
 import { Image, StyleSheet, View, Text, Button } from "react-native";
 import GoldIcon from "@/assets/icons/gold.svg";
 import WoodIcon from "@/assets/icons/wood.svg";
@@ -7,6 +7,8 @@ import MeepleIcon from "@/assets/icons/meeple.svg";
 import { useCurrentUser } from "@/hooks/useUser";
 import { useUpgradeBuilding } from "@/hooks/useBuildings";
 import { useInventory } from "@/hooks/useInventory";
+import { TextInput } from "react-native-gesture-handler";
+import { useState } from "react";
 
 const ICON_SIZE = 24;
 
@@ -16,6 +18,10 @@ export const TerritoryDetails = ({ territory }: { territory?: Territory }) => {
 
   const { mutate: upgradeBuilding } = useUpgradeBuilding();
   const { mutate: attackTerritory } = useAttackTerritory();
+  const { mutate: moveMinions } = useMinionMovement();
+
+  const [dropMinions, setDropMinions] = useState(String(inventory?.MINIONS || 0));
+  const [collectMinions, setCollectMinions] = useState(String(territory?.minions || 0));
 
   return (
     <View style={styles.container}>
@@ -95,7 +101,42 @@ export const TerritoryDetails = ({ territory }: { territory?: Territory }) => {
           />
         </View>
       ) : (
-        <></>
+        <View style={styles.resourcesContainer}>
+          <View style={{ flexDirection: "row", alignContent: "stretch" }}>
+            <TextInput
+              keyboardType="number-pad"
+              value={collectMinions}
+              onChangeText={setCollectMinions}
+              style={{ flex: 1 }}
+            />
+            <Button
+              title="collect minions"
+              onPress={() =>
+                moveMinions({
+                  territoryId: territory?.id,
+                  collect: Number(collectMinions),
+                })
+              }
+            />
+          </View>
+          <View style={{ flexDirection: "row", alignContent: "stretch" }}>
+            <TextInput
+              keyboardType="number-pad"
+              value={dropMinions}
+              onChangeText={setDropMinions}
+              style={{ flex: 1 }}
+            />
+            <Button
+              title="drop minions"
+              onPress={() =>
+                moveMinions({
+                  territoryId: territory?.id,
+                  drop: Number(dropMinions),
+                })
+              }
+            />
+          </View>
+        </View>
       )}
     </View>
   );

@@ -15,7 +15,7 @@ export const useInventory = () =>
         WOOD: number;
         FOOD: number;
         GOLD: number;
-        MINION: number;
+        MINIONS: number;
       };
     },
   });

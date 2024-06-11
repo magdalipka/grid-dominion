@@ -79,7 +79,7 @@ public class UserService {
 
   public void deleteUser(String id) {
     UserModel user = userRepository.findById(id).orElse(null);
-    InventoryModel inventory = inventoryRepository.findByUserId(user);
+    InventoryModel inventory = user.getInventory();
 
     if (user == null) {
       throw new Unauthorized("User not found");

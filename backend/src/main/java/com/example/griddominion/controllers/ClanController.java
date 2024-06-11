@@ -10,7 +10,6 @@ import com.example.griddominion.models.api.input.ClanCreationInput;
 import com.example.griddominion.models.api.input.ResourcesTransferInput;
 import com.example.griddominion.models.api.output.ClanOutput;
 import com.example.griddominion.services.ClanService;
-import com.example.griddominion.utils.Headers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

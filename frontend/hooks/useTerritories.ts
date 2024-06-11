@@ -100,12 +100,11 @@ export const useAttackTerritory = () => {
   return useMutation({
     mutationFn: async ({ territoryId }: { territoryId: number }) => {
       const res = await (
-        await request("/territories/owner", {
+        await request("/territories/" + territoryId + "/invade", {
           method: "POST",
           headers: {
             "content-type": "application/json",
           },
-          body: JSON.stringify({ Id: territoryId }),
         })
       ).json();
       console.log({ res });
@@ -117,7 +116,13 @@ export const useAttackTerritory = () => {
         ["territories"],
         (oldData: Array<Territory>) => [
           ...oldData!.map((t) =>
-            t.id === territoryId && data.win ? { ...t, ownerNick: user?.nick } : t
+            t.id === territoryId
+              ? {
+                  ...t,
+                  ...(data.win ? { ownerNick: user?.nick } : {}),
+                  minions: data.territoryMinions,
+                }
+              : t
           ),
         ],
         data
@@ -125,6 +130,56 @@ export const useAttackTerritory = () => {
     },
     onMutate: () => {
       client.refetchQueries({ queryKey: ["territories"] });
+      client.refetchQueries({ queryKey: ["myInventory"] });
+    },
+  });
+};
+
+export const useMinionMovement = () => {
+  const client = useQueryClient();
+  const { data: user } = useCurrentUser();
+
+  return useMutation({
+    mutationFn: async ({
+      territoryId,
+      drop = 0,
+      collect = 0,
+    }: {
+      territoryId: number;
+      drop?: number;
+      collect?: number;
+    }) => {
+      console.log({ territoryId, drop, collect });
+      const res = await (
+        await request("/territories/" + territoryId + "/minions", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            drop: drop,
+            collect: collect,
+          }),
+        })
+      ).json();
+      console.log({ res });
+      return res;
+    },
+    onSuccess: (data, { territoryId, collect = 0, drop = 0 }) => {
+      console.log({ data, territoryId, user });
+      client.setQueryData(
+        ["territories"],
+        (oldData: Array<Territory>) => [
+          ...oldData!.map((t) =>
+            t.id === territoryId ? { ...t, minions: t.minions - collect + drop } : t
+          ),
+        ],
+        data
+      );
+    },
+    onMutate: () => {
+      client.refetchQueries({ queryKey: ["territories"] });
+      client.refetchQueries({ queryKey: ["myInventory"] });
     },
   });
 };

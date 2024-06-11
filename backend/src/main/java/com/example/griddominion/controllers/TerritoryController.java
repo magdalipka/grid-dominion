@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.griddominion.models.api.input.MinionDropCollectInput;
 import com.example.griddominion.models.api.input.TerritoryIdInput;
-import com.example.griddominion.models.api.input.TerritoryOwnerInput;
 import com.example.griddominion.models.api.output.BuildingOutput;
 import com.example.griddominion.models.api.output.FightOutput;
 import com.example.griddominion.models.api.output.TerritoryOutput;
@@ -36,11 +36,12 @@ public class TerritoryController {
     return ResponseEntity.ok(owners);
   }
 
-  @PostMapping("/owner")
-  public ResponseEntity<FightOutput> updateOwner(@RequestBody TerritoryOwnerInput input,
+  @PostMapping("/{territory_id}/invade")
+  public ResponseEntity<FightOutput> updateOwner(@PathVariable("territory_id") Integer territoryId,
       @CookieValue("sid") String authToken) {
     var user = userService.getUserBySessionToken(authToken);
-    FightOutput opt = territoryService.upddateOwner(input, user);
+    var territory = territoryService.getById(territoryId);
+    FightOutput opt = territoryService.invade(territory, user);
     return ResponseEntity.ok(opt);
   }
 
@@ -49,4 +50,17 @@ public class TerritoryController {
     List<BuildingOutput> buildingOutputs = territoryService.getTerritoryBuildings(input);
     return ResponseEntity.ok(buildingOutputs);
   }
+
+  @PostMapping("/{territory_id}/minions")
+  public ResponseEntity<?> dropCollectMinions(@PathVariable("territory_id") Integer territoryId,
+      @CookieValue("sid") String authToken, @RequestBody MinionDropCollectInput input) {
+    var user = userService.getUserBySessionToken(authToken);
+    var territory = territoryService.getById(territoryId);
+    if (territory.getOwner() == null || territory.getOwner().getId() != user.getId()) {
+      return ResponseEntity.badRequest().body("Territory does not belong to user.");
+    }
+    var res = territoryService.dropCollectMinions(territory, user, input);
+    return ResponseEntity.ok(new TerritoryOutput(res));
+  }
+
 }

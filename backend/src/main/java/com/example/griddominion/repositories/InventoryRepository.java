@@ -5,5 +5,5 @@ import com.example.griddominion.models.db.InventoryModel;
 import com.example.griddominion.models.db.UserModel;
 
 public interface InventoryRepository extends JpaRepository<InventoryModel, Long> {
-    InventoryModel findByUserId(UserModel user);
+    InventoryModel findByUserId(String user);
 }

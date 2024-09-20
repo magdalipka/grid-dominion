@@ -127,7 +127,7 @@ public class TerritoryService {
             .orElseThrow(() -> new NotFound("No lumber mill"));
         FarmModel farm = (FarmModel) buildings.stream().filter(building -> building instanceof FarmModel).findFirst()
             .orElseThrow(() -> new NotFound("No farm"));
-        InventoryModel inventory = inventoryRepository.findByUserId(owner);
+        InventoryModel inventory = inventoryRepository.findByUserId(owner.getId());
         HashMap<Item, Integer> items = inventory.getInventory();
         Integer current = items.get(Item.FOOD);
         items.put(Item.FOOD,

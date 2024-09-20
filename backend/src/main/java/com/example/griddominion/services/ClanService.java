@@ -131,6 +131,7 @@ public class ClanService {
     if (!sender.getClan().equals(reciver.getClan())) {
       throw new Forbidden("Users are not in the same clan");
     }
+    
 
     InventoryModel send = sender.getInventory();
     HashMap<Item, Integer> hashSend = send.getInventory();

@@ -1,0 +1,21 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend\\src",
+    "\\backend\\src\\main",
+    "\\backend\\src\\main\\java",
+    "\\backend\\src\\main\\java\\com",
+    "\\backend\\src\\main\\java\\com\\example",
+    "\\backend\\src\\main\\java\\com\\example\\griddominion",
+    "\\backend\\src\\main\\java\\com\\example\\griddominion\\services",
+    "\\frontend",
+    "\\frontend\\app",
+    "\\frontend\\components",
+    "\\frontend\\constants",
+    "\\frontend\\contexts",
+    "\\frontend\\hooks",
+    "\\frontend\\lib"
+  ],
+  "SelectedNode": "\\frontend\\contexts\\auth.tsx",
+  "PreviewInSolutionExplorer": false
+}

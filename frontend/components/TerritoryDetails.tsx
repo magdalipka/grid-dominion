@@ -78,7 +78,8 @@ export const TerritoryDetails = ({ territory }: { territory?: Territory }) => {
                     inventory?.WOOD <= building.woodCost ||
                     inventory?.FOOD <= building.foodCost
                   }
-                  onPress={() => upgradeBuilding({ buildingId: building.id })}
+                  onPress={() => upgradeBuilding({
+                    territoryId: territory?.id, buildingId: Number(building.id),userId: user?.id})}
                 />
               </>
             ) : (

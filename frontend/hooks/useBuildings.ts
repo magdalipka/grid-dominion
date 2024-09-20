@@ -14,14 +14,20 @@ export type Building = {
 
 export const useUpgradeBuilding = () => {
   const client = useQueryClient();
+
   return useMutation({
-    mutationFn: async ({ buildingId }: { buildingId: string }) => {
+    mutationFn: async ({ territoryId, buildingId,userId }: { territoryId: number, buildingId: number, userId : string }) => {
       const res = await (
-        await request("/buildings/" + buildingId + "/upgrade", {
+        await request("/buildings/upgrade", {
           method: "POST",
           headers: {
             "content-type": "application/json",
           },
+          body: JSON.stringify({
+            territoryId,
+            buildingId,
+            userId
+          }),
         })
       ).json();
       console.log({ res });
@@ -33,3 +39,4 @@ export const useUpgradeBuilding = () => {
     },
   });
 };
+

@@ -1,0 +1,377 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Projekt\\grid-dominion\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\contexts\\auth.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\contexts\\auth.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\hooks\\useUser.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\hooks\\useUser.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\hooks\\useBuildings.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\hooks\\useBuildings.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\hooks\\useClan.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\hooks\\useClan.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\hooks\\useColorScheme.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\hooks\\useColorScheme.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\hooks\\useColorScheme.web.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\hooks\\useColorScheme.web.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\hooks\\useInventory.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\hooks\\useInventory.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\hooks\\useTerritories.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\hooks\\useTerritories.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\hooks\\useThemeColor.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\hooks\\useThemeColor.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\lib\\request.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\lib\\request.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\.env||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\.nvmrc||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\.nvmrc||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\components\\ThemedText.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\components\\ThemedText.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\components\\ParallaxScrollView.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\components\\ParallaxScrollView.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\app\\_layout.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\app\\_layout.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\app\\\u002Bnot-found.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\app\\\u002Bnot-found.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\app\\\u002Bhtml.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\app\\\u002Bhtml.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\frontend\\metro.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\metro.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\backend\\src\\main\\java\\com\\example\\griddominion\\controllers\\UserController.java||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\src\\main\\java\\com\\example\\griddominion\\controllers\\UserController.java||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Projekt\\grid-dominion\\backend\\src\\main\\java\\com\\example\\griddominion\\services\\UserService.java||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\src\\main\\java\\com\\example\\griddominion\\services\\UserService.java||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "auth.tsx",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\contexts\\auth.tsx",
+              "RelativeDocumentMoniker": "frontend\\contexts\\auth.tsx",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\contexts\\auth.tsx",
+              "RelativeToolTip": "frontend\\contexts\\auth.tsx",
+              "ViewState": "AQIAACUAAAAAAAAAAAAQwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:09:35.203Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "useUser.ts",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useUser.ts",
+              "RelativeDocumentMoniker": "frontend\\hooks\\useUser.ts",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useUser.ts",
+              "RelativeToolTip": "frontend\\hooks\\useUser.ts",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:08:59.145Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "useClan.ts",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useClan.ts",
+              "RelativeDocumentMoniker": "frontend\\hooks\\useClan.ts",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useClan.ts",
+              "RelativeToolTip": "frontend\\hooks\\useClan.ts",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:08:06.264Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "useInventory.ts",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useInventory.ts",
+              "RelativeDocumentMoniker": "frontend\\hooks\\useInventory.ts",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useInventory.ts",
+              "RelativeToolTip": "frontend\\hooks\\useInventory.ts",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:08:00.778Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "useTerritories.ts",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useTerritories.ts",
+              "RelativeDocumentMoniker": "frontend\\hooks\\useTerritories.ts",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useTerritories.ts",
+              "RelativeToolTip": "frontend\\hooks\\useTerritories.ts",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:07:56.766Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "useThemeColor.ts",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useThemeColor.ts",
+              "RelativeDocumentMoniker": "frontend\\hooks\\useThemeColor.ts",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useThemeColor.ts",
+              "RelativeToolTip": "frontend\\hooks\\useThemeColor.ts",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:07:54.093Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "useColorScheme.web.ts",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useColorScheme.web.ts",
+              "RelativeDocumentMoniker": "frontend\\hooks\\useColorScheme.web.ts",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useColorScheme.web.ts",
+              "RelativeToolTip": "frontend\\hooks\\useColorScheme.web.ts",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:07:22.646Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "useColorScheme.ts",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useColorScheme.ts",
+              "RelativeDocumentMoniker": "frontend\\hooks\\useColorScheme.ts",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useColorScheme.ts",
+              "RelativeToolTip": "frontend\\hooks\\useColorScheme.ts",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:07:21.386Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": ".nvmrc",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\.nvmrc",
+              "RelativeDocumentMoniker": "frontend\\.nvmrc",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\.nvmrc",
+              "RelativeToolTip": "frontend\\.nvmrc",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-09-20T17:07:06.079Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "request.ts",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\lib\\request.ts",
+              "RelativeDocumentMoniker": "frontend\\lib\\request.ts",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\lib\\request.ts",
+              "RelativeToolTip": "frontend\\lib\\request.ts",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:04:41.924Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "useBuildings.ts",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useBuildings.ts",
+              "RelativeDocumentMoniker": "frontend\\hooks\\useBuildings.ts",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\hooks\\useBuildings.ts",
+              "RelativeToolTip": "frontend\\hooks\\useBuildings.ts",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:04:16.22Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ThemedText.tsx",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\components\\ThemedText.tsx",
+              "RelativeDocumentMoniker": "frontend\\components\\ThemedText.tsx",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\components\\ThemedText.tsx",
+              "RelativeToolTip": "frontend\\components\\ThemedText.tsx",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:04:12.852Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ParallaxScrollView.tsx",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\components\\ParallaxScrollView.tsx",
+              "RelativeDocumentMoniker": "frontend\\components\\ParallaxScrollView.tsx",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\components\\ParallaxScrollView.tsx",
+              "RelativeToolTip": "frontend\\components\\ParallaxScrollView.tsx",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:04:11.272Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\.gitignore",
+              "RelativeDocumentMoniker": "frontend\\.gitignore",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\.gitignore",
+              "RelativeToolTip": "frontend\\.gitignore",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-09-20T17:01:58.311Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": ".env",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\.env",
+              "RelativeDocumentMoniker": "frontend\\.env",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\.env*",
+              "RelativeToolTip": "frontend\\.env*",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-09-20T17:01:57.097Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "_layout.tsx",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\app\\_layout.tsx",
+              "RelativeDocumentMoniker": "frontend\\app\\_layout.tsx",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\app\\_layout.tsx",
+              "RelativeToolTip": "frontend\\app\\_layout.tsx",
+              "ViewState": "AQIAACMAAAAAAAAAAAAAwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:01:51.412Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "\u002Bnot-found.tsx",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\app\\\u002Bnot-found.tsx",
+              "RelativeDocumentMoniker": "frontend\\app\\\u002Bnot-found.tsx",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\app\\\u002Bnot-found.tsx",
+              "RelativeToolTip": "frontend\\app\\\u002Bnot-found.tsx",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:01:49.047Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "\u002Bhtml.tsx",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\app\\\u002Bhtml.tsx",
+              "RelativeDocumentMoniker": "frontend\\app\\\u002Bhtml.tsx",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\app\\\u002Bhtml.tsx",
+              "RelativeToolTip": "frontend\\app\\\u002Bhtml.tsx",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-09-20T17:01:37.454Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "metro.config.js",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\frontend\\metro.config.js",
+              "RelativeDocumentMoniker": "frontend\\metro.config.js",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\frontend\\metro.config.js",
+              "RelativeToolTip": "frontend\\metro.config.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-09-20T17:01:23.315Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "UserService.java",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\backend\\src\\main\\java\\com\\example\\griddominion\\services\\UserService.java",
+              "RelativeDocumentMoniker": "backend\\src\\main\\java\\com\\example\\griddominion\\services\\UserService.java",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\backend\\src\\main\\java\\com\\example\\griddominion\\services\\UserService.java",
+              "RelativeToolTip": "backend\\src\\main\\java\\com\\example\\griddominion\\services\\UserService.java",
+              "ViewState": "AQIAABgAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-09-20T16:42:22.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "UserController.java",
+              "DocumentMoniker": "C:\\Projekt\\grid-dominion\\backend\\src\\main\\java\\com\\example\\griddominion\\controllers\\UserController.java",
+              "RelativeDocumentMoniker": "backend\\src\\main\\java\\com\\example\\griddominion\\controllers\\UserController.java",
+              "ToolTip": "C:\\Projekt\\grid-dominion\\backend\\src\\main\\java\\com\\example\\griddominion\\controllers\\UserController.java",
+              "RelativeToolTip": "backend\\src\\main\\java\\com\\example\\griddominion\\controllers\\UserController.java",
+              "ViewState": "AQIAAG8AAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-09-20T16:41:57.103Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

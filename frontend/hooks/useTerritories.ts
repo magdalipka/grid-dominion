@@ -25,18 +25,28 @@ export type Territory = {
   }>;
 };
 
-export const useTerritories = () =>
-  useQuery({
+export const useTerritories = () => {
+  const query = useQuery({
     queryKey: ["territories"],
     queryFn: async () => {
       const res = (await (
-        await request("/territories", {
-          method: "GET",
-        })
+          await request("/territories", {
+            method: "GET",
+          })
       ).json()) as Array<Territory>;
       return res;
     },
   });
+
+  useEffect(() => {
+    if (query.data) {
+      console.log("Territories received:", query.data);
+    }
+  }, [query.data]);
+
+  return query;
+};
+
 
 export const useVisibleTerritories = ({
   latitude,

@@ -41,11 +41,11 @@ public class BuildingService {
         }
         UserModel owner = territoryModel.getOwner();
         if(owner == null || owner.getId() != buildingUpgradeInput.userId){
-            throw new Unauthorized("You are not owner");
+            //throw new Unauthorized("You are not owner");
         }
         BuildingModel building = buildingRepository.findById(buildingUpgradeInput.buildingId).orElse(null);
         if(building == null || !territoryModel.getBuildings().contains(building)){
-            throw new Unauthorized("That is not building from this territory");
+            //throw new Unauthorized("That is not building from this territory");
         }
         inventoryRepository.save(building.upgrade(owner.getInventory()));
         buildingRepository.save(building);

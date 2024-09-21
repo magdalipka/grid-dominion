@@ -15,7 +15,7 @@ export type Territory = {
   ownerNick: string;
   minions: number;
   buildings: Array<{
-    id: string;
+    id: number;
     level: number;
     goldCost: number;
     woodCost: number;

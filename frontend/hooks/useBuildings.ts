@@ -15,14 +15,28 @@ export type Building = {
 export const useUpgradeBuilding = () => {
   const client = useQueryClient();
   return useMutation({
-    mutationFn: async ({ buildingId }: { buildingId: string }) => {
+    // The mutation function now expects an object containing territoryId, buildingId, and userId
+    mutationFn: async ({
+                         territoryId,
+                         buildingId,
+                         userId,
+                       }: {
+      territoryId: number;
+      buildingId: number; // Long in JS can be represented as a number
+      userId: string;
+    }) => {
       const res = await (
-        await request("/buildings/" + buildingId + "/upgrade", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-        })
+          await request("/buildings/upgrade", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              territoryId, // Include these values in the request body
+              buildingId,
+              userId,
+            }),
+          })
       ).json();
       console.log({ res });
       return res;
@@ -33,3 +47,4 @@ export const useUpgradeBuilding = () => {
     },
   });
 };
+
